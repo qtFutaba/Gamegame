@@ -7,12 +7,5 @@ public class main {
         Knight knight = new Knight();
         Dragon dragon = new Dragon();
         Baarsch baarsch = new Baarsch();
-
-        System.out.println(goblin + "\n");
-        System.out.println(wizard + "\n");
-        System.out.println(orc + "\n");
-        System.out.println(knight + "\n");
-        System.out.println(dragon + "\n");
-        System.out.println(baarsch + "\n");
     }
 }
