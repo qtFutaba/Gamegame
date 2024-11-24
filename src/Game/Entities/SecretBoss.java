@@ -1,21 +1,54 @@
 package Game.Entities;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 public class SecretBoss extends Enemy {
+    private static final List<String> greetingMsgs = Arrays.asList("Good afternoon, class.");
+    private static final List<String> victoryMsgs = Arrays.asList(
+            "Class is dismissed.",
+            "Hmm... maybe I'll add five minutes to the next exam.");
+    private static final List<String> defeatMsgs = Arrays.asList(
+            "This fight turned out to be more challenging than I originally anticipated");
+    private static final List<String> attackMsgs = Arrays.asList(
+            "* uncontrollable laughter *",
+            "Time to throw an exception you can’t catch!",
+            "There’s no escaping this one. Lab 5 is due soon— hope you’re ready to sacrifice your weekend.");
+    private final Random rand = new Random();
+
     public SecretBoss() {
-        setName("Dr. Baarsch");
-        setMaxHealth(700);
-        setCurrentHealth(700);
-        setCoinReward(400);
-        setSprite("src/Sprites/secretboss.png");
-
-        // Set random attack, defense, and magic stats
-        setStat(ULTRA);
-        setAttack(getStat());
-
-        setStat(HIGH);
-        setDefense(getStat());
-
-        setStat(HIGH);
-        setMagicPoints(getStat());
+        this.setName("Dr. Baarsch");
+        this.setMaxHealth(700);
+        this.setCurrentHealth(700);
+        this.setCoinReward(400);
+        this.setSprite("src/Sprites/secretboss.png");
+        this.setStat("ultra");
+        this.setAttack(this.getStat());
+        this.setStat("high");
+        this.setDefense(this.getStat());
+        this.setStat("high");
+        this.setMagicPoints(this.getStat());
     }
+
+
+    public String getGreeting() {
+        return (String)greetingMsgs.get(this.rand.nextInt(greetingMsgs.size()));
+    }
+
+
+    public String getVictoryMsg() {
+        return (String)victoryMsgs.get(this.rand.nextInt(victoryMsgs.size()));
+    }
+
+
+    public String getDefeatMsg() {
+        return (String)defeatMsgs.get(this.rand.nextInt(defeatMsgs.size()));
+    }
+
+
+    public String getAttackMsg() {
+        return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
+    }
+
 }
