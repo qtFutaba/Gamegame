@@ -1,7 +1,6 @@
 package GUI.Panels;
 
 import GUI.Controllers.*;
-import Game.Entities.*;
 
 import java.awt.*;
 import javax.swing.*;
@@ -9,16 +8,12 @@ import javax.swing.border.Border;
 
 public class BattlePanel extends JPanel
 {
-    private Player player;
-    private Enemy enemy;
-    private ActionPanel actionPanel;
+    private EntityPanel playerPanel;
+    private EntityPanel enemyPanel;
 
     // Constructor for the main menu.
-    public BattlePanel(BattleControl bc)
+    public BattlePanel(GameController gc)
     {
-        player = new Player();
-        enemy = new Goblin();
-
         this.setLayout(new BorderLayout());
         //----------------------------------------------------------------------------------------------------------------
         // Create the battle log.
@@ -40,14 +35,27 @@ public class BattlePanel extends JPanel
 
 
         //----------------------------------------------------------------------------------------------------------------
-        // Create the actual battle panel.
+        // Create the actual battle scene.
         //----------------------------------------------------------------------------------------------------------------
-        actionPanel = new ActionPanel(player, enemy);
+        Dimension sceneSize = new Dimension(350, 350);
+        playerPanel = new EntityPanel(gc.getPlayer());
+        playerPanel.setPreferredSize(sceneSize);
+        playerPanel.setMinimumSize(sceneSize);
+        playerPanel.setMaximumSize(sceneSize);
 
-        Dimension sceneSize = new Dimension(1000, 500);
-        actionPanel.setPreferredSize(sceneSize);
-        actionPanel.setMinimumSize(sceneSize);
-        actionPanel.setMaximumSize(sceneSize);
+        enemyPanel = new EntityPanel(gc.getEnemy(gc.getBattleCounter()));
+        enemyPanel.setPreferredSize(sceneSize);
+        enemyPanel.setMinimumSize(sceneSize);
+        enemyPanel.setMaximumSize(sceneSize);
+
+        JPanel battleScene = new JPanel();
+
+        playerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        enemyPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        battleScene.add(playerPanel);
+        battleScene.add(enemyPanel);
+
         //----------------------------------------------------------------------------------------------------------------
         // Create the options.
         //----------------------------------------------------------------------------------------------------------------
@@ -56,7 +64,7 @@ public class BattlePanel extends JPanel
 
         //Fight.
         JButton fightButton = new JButton("Fight");
-        fightButton.addActionListener(bc);
+        fightButton.addActionListener(gc);
 
         fightButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         fightButton.setBackground(Color.BLACK);
@@ -79,7 +87,7 @@ public class BattlePanel extends JPanel
 
         //Utilities.
         JButton utilityButton = new JButton("Utility");
-        utilityButton.addActionListener(bc);
+        utilityButton.addActionListener(gc);
 
         utilityButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         utilityButton.setBackground(Color.BLACK);
@@ -102,7 +110,7 @@ public class BattlePanel extends JPanel
 
         //Surrender.
         JButton surrenderButton = new JButton("Surrender");
-        surrenderButton.addActionListener(bc);
+        surrenderButton.addActionListener(gc);
 
         surrenderButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         surrenderButton.setBackground(Color.BLACK);
@@ -139,29 +147,24 @@ public class BattlePanel extends JPanel
         JPanel mainGrid = new JPanel();
         mainGrid.setLayout(new BorderLayout());
         mainGrid.add(battleLog, BorderLayout.NORTH);
-        mainGrid.add(actionPanel, BorderLayout.CENTER);
+        mainGrid.add(battleScene, BorderLayout.CENTER);
         mainGrid.add(choices, BorderLayout.SOUTH);
 
         //Align everything in main grid.
         battleLog.setAlignmentX(Component.CENTER_ALIGNMENT);
         choices.setAlignmentX(Component.CENTER_ALIGNMENT);
-        actionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        battleScene.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Color.
         mainGrid.setBackground(Color.BLACK);
         choices.setBackground(Color.BLACK);
-        actionPanel.setBackground(Color.BLACK);
+        playerPanel.setBackground(Color.BLACK);
+        enemyPanel.setBackground(Color.BLACK);
+        battleScene.setBackground(Color.BLACK);
         fightButtonBuffer.setBackground(Color.BLACK);
         utilityButtonBuffer.setBackground(Color.BLACK);
         surrenderButtonBuffer.setBackground(Color.BLACK);
 
         this.add(mainGrid);
     }
-
-
-    public Player getPlayer(){return player;}
-    public void setPlayer(Player player){this.player = player;}
-
-    public Enemy getEnemy(){return enemy;}
-    public void setEnemy(Enemy enemy){this.enemy = enemy;}
 }

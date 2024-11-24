@@ -45,12 +45,4 @@ public class Player extends Entity {
         gear.removeIf(g -> g.getName().equals(n));
     }
 
-    public int getAttack(){
-        int dmg = super.getAttack();
-        for(Gear g : gear){
-            dmg += g.getAtkBuff();
-        }
-        return dmg;
-    }
-
 }

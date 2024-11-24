@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 public class VictoryPanel extends JPanel
 {
     // Constructor for the main menu.
-    public VictoryPanel(VictoryControl vc)
+    public VictoryPanel(GameController gc)
     {
 // Create the title.
         JLabel label = new JLabel("YOU HAVE SURVIVED THE DUNGEONS OF CAZA.", JLabel.CENTER);
@@ -17,7 +17,7 @@ public class VictoryPanel extends JPanel
 
         // Create the new game button.
         JButton newGameButton = new JButton("New Game");
-        newGameButton.addActionListener(vc);
+        newGameButton.addActionListener(gc);
 
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
         Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10); // 10 pixels padding
@@ -31,7 +31,7 @@ public class VictoryPanel extends JPanel
 
         // Create the leaderboard button.
         JButton leaderboardButton = new JButton("Leaderboard");
-        leaderboardButton.addActionListener(vc);
+        leaderboardButton.addActionListener(gc);
         leaderboardButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         leaderboardButton.setBackground(Color.BLACK);
         leaderboardButton.setForeground(Color.WHITE);
@@ -43,7 +43,7 @@ public class VictoryPanel extends JPanel
 
         // Create the exit button.
         JButton exitButton = new JButton("Exit Game");
-        exitButton.addActionListener(vc);
+        exitButton.addActionListener(gc);
         exitButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         exitButton.setBackground(Color.BLACK);
         exitButton.setForeground(Color.WHITE);

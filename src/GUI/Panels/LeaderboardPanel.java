@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 public class LeaderboardPanel extends JPanel
 {
     // Constructor for the main menu.
-    public LeaderboardPanel(LeaderboardControl lbc)
+    public LeaderboardPanel(GameController gc)
     {
         // Create the title.
         JLabel label = new JLabel("Leaderboard", JLabel.CENTER);
@@ -31,7 +31,7 @@ public class LeaderboardPanel extends JPanel
 
         // Create the return to main menu button.
         JButton mainmenuButton = new JButton("Return to Main Menu.");
-        mainmenuButton.addActionListener(lbc);
+        mainmenuButton.addActionListener(gc);
         mainmenuButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         mainmenuButton.setBackground(Color.BLACK);
         mainmenuButton.setForeground(Color.WHITE);

@@ -9,9 +9,16 @@ public class CharacterCreationPanel extends JPanel
 {
     private JLabel nameLabel;
     private JTextField nameField;
+    public JButton warriorButton;
+    public JButton mageButton;
+    public JButton paladinButton;
+
+    public JLabel warriorImage;
+    public JLabel mageImage;
+    public JLabel paladinImage;
 
     // Constructor for the main menu.
-    public CharacterCreationPanel(CharacterCreationControl ccc)
+    public CharacterCreationPanel(GameController gc)
     {
         // Create the title.
         JLabel label = new JLabel("CREATE YOUR CHARACTER, ADVENTURER.", JLabel.CENTER);
@@ -19,14 +26,14 @@ public class CharacterCreationPanel extends JPanel
         label.setForeground(Color.WHITE);
 
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-        Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10); // 10 pixels padding
+        Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 
         //----------------------------------------------------------------------------------------------------------------
         // Create the character choices.
         //----------------------------------------------------------------------------------------------------------------
         //Warrior. High attack. Medium defense. Low magic.
-        JButton warriorButton = new JButton("Warrior");
-        warriorButton.addActionListener(ccc);
+        warriorButton = new JButton("Warrior");
+        warriorButton.addActionListener(gc);
 
         warriorButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         warriorButton.setBackground(Color.BLACK);
@@ -48,7 +55,7 @@ public class CharacterCreationPanel extends JPanel
 
         String warriorFilename = "src/Sprites/warriorplayer.png";
         Icon warriorIcon = new ImageIcon(warriorFilename);
-        JLabel warriorImage = new JLabel();
+        warriorImage = new JLabel();
         warriorImage.setIcon(warriorIcon);
 
         JPanel warriorButtonBuffer = new JPanel();
@@ -66,8 +73,8 @@ public class CharacterCreationPanel extends JPanel
         warriorImage.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Mage. Low attack. Medium defense. High magic.
-        JButton mageButton = new JButton("Mage");
-        mageButton.addActionListener(ccc);
+        mageButton = new JButton("Mage");
+        mageButton.addActionListener(gc);
         mageButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         mageButton.setBackground(Color.BLACK);
         mageButton.setForeground(Color.YELLOW);
@@ -88,7 +95,7 @@ public class CharacterCreationPanel extends JPanel
 
         String mageFilename = "src/Sprites/mageplayer.png";
         Icon mageIcon = new ImageIcon(mageFilename);
-        JLabel mageImage = new JLabel();
+        mageImage = new JLabel();
         mageImage.setIcon(mageIcon);
 
         JPanel mageButtonBuffer = new JPanel();
@@ -106,8 +113,8 @@ public class CharacterCreationPanel extends JPanel
         mageImage.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Paladin. Low attack. High defense. Medium magic.
-        JButton paladinButton = new JButton("Paladin");
-        paladinButton.addActionListener(ccc);
+        paladinButton = new JButton("Paladin");
+        paladinButton.addActionListener(gc);
         paladinButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         paladinButton.setBackground(Color.BLACK);
         paladinButton.setForeground(Color.YELLOW);
@@ -128,7 +135,7 @@ public class CharacterCreationPanel extends JPanel
 
         String paladinFilename = "src/Sprites/paladinplayer.png";
         Icon paladinIcon = new ImageIcon(paladinFilename);
-        JLabel paladinImage = new JLabel();
+        paladinImage = new JLabel();
         paladinImage.setIcon(paladinIcon);
 
         JPanel paladinButtonBuffer = new JPanel();
@@ -175,7 +182,7 @@ public class CharacterCreationPanel extends JPanel
 
         // Begin journey button.
         JButton beginJourneyButton = new JButton("Begin Your Journey...");
-        beginJourneyButton.addActionListener(ccc);
+        beginJourneyButton.addActionListener(gc);
         beginJourneyButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         beginJourneyButton.setBackground(Color.BLACK);
         beginJourneyButton.setForeground(Color.YELLOW);

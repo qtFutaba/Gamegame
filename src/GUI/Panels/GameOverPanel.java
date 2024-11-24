@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 public class GameOverPanel extends JPanel
 {
     // Constructor for the main menu.
-    public GameOverPanel(GameOverControl goc)
+    public GameOverPanel(GameController gc)
     {
         // Create the title.
         JLabel label = new JLabel("GAME OVER, ADVENTURER.", JLabel.CENTER);
@@ -17,7 +17,7 @@ public class GameOverPanel extends JPanel
 
         // Create the new game button.
         JButton newGameButton = new JButton("New Game");
-        newGameButton.addActionListener(goc);
+        newGameButton.addActionListener(gc);
 
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
         Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10); // 10 pixels padding
@@ -31,7 +31,7 @@ public class GameOverPanel extends JPanel
 
         // Create the leaderboard button.
         JButton leaderboardButton = new JButton("Leaderboard");
-        leaderboardButton.addActionListener(goc);
+        leaderboardButton.addActionListener(gc);
         leaderboardButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         leaderboardButton.setBackground(Color.BLACK);
         leaderboardButton.setForeground(Color.WHITE);
@@ -43,7 +43,7 @@ public class GameOverPanel extends JPanel
 
         // Create the exit button.
         JButton exitButton = new JButton("Exit Game");
-        exitButton.addActionListener(goc);
+        exitButton.addActionListener(gc);
         exitButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         exitButton.setBackground(Color.BLACK);
         exitButton.setForeground(Color.WHITE);
