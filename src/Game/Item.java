@@ -12,7 +12,6 @@ public class Item {
     public int defenseBoost;
     public int magicBoost;
 
-
     public Item() {
         this.itemName = "Default item";
         this.itemDescription = "A default item.";
@@ -22,11 +21,9 @@ public class Item {
         this.magicBoost = 0;
     }
 
-
     public String generateDescription() {
         StringBuilder description = new StringBuilder();
         List<String> boosts = new ArrayList<>();
-
 
         // Store stat boost information into ArrayList
         if (defenseBoost > 0) {
@@ -38,7 +35,6 @@ public class Item {
         if (magicBoost > 0) {
             boosts.add("MAG (+ " + magicBoost + ")");
         }
-
 
         // Display stat boost information
         for (String boost : boosts) {
@@ -61,28 +57,22 @@ public class Item {
             // Inherit superclass
             super();
 
-
             // Set item name
             this.itemName = "Fortune Cookie";
-
 
             // Set item stats
             this.magicBoost = 3;
 
-
             // Set item price
             this.itemPrice = 5;
 
-
             // Item description line
             String customDescription = """
-               A crunchy snack that promises a fortune.
-               """;
-
+            A crunchy snack that promises a fortune.
+            """;
 
             // Item stat boost information
             String boostDescription = generateDescription();
-
 
             // Concatenate item description and stat boost information
             this.itemDescription = customDescription + boostDescription;
@@ -94,30 +84,24 @@ public class Item {
             // Inherit superclass
             super();
 
-
             // Set item name
             this.itemName = "Naglfar Fragment";
-
 
             // Set item stats
             this.defenseBoost = 10;
 
-
             // Set item price
             this.itemPrice = 25;
 
-
             // Item description line
             String customDescription = """
-       A shard from the ship of doom, Naglfar, said to be crafted from the nails of dead men. This dark relic
-       emits a faint, unsettling aura, as if it carries the weight of countless souls. This fragment offers
-       powerful protection, drawing strength from its dark and ancient origins.
-       """;
-
+            A shard from the ship of doom, Naglfar, said to be crafted from the nails of dead men. This dark relic
+            emits a faint, unsettling aura, as if it carries the weight of countless souls. This fragment offers
+            powerful protection, drawing strength from its dark and ancient origins.
+            """;
 
             // Item stat boost information
             String boostDescription = generateDescription();
-
 
             // Concatenate item description and stat boost information
             this.itemDescription = customDescription + boostDescription;
@@ -129,30 +113,24 @@ public class Item {
             // Inherit superclass
             super();
 
-
             // Set item name
             this.itemName = "Sock";
-
 
             // Set item stats
             this.defenseBoost = 3;
 
-
             // Set item price
             this.itemPrice = 5;
 
-
             // Item description line
             String customDescription = """
-               ... It's just a sock.
-               Its pungent odor may not be pleasant, but it has a way of keeping enemies at bay.
-               Some say the smell is worse than the most powerful of curses.
-               """;
-
+            ... It's just a sock.
+            Its pungent odor may not be pleasant, but it has a way of keeping enemies at bay.
+            Some say the smell is worse than the most powerful of curses.
+            """;
 
             // Item stat boost information
             String boostDescription = generateDescription();
-
 
             // Concatenate item description and stat boost information
             this.itemDescription = customDescription + boostDescription;

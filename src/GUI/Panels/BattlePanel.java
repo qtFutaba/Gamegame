@@ -167,4 +167,8 @@ public class BattlePanel extends JPanel
 
         this.add(mainGrid);
     }
+
+    public EntityPanel getEnemyPanel() {
+        return enemyPanel;
+    }
 }

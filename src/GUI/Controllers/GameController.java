@@ -189,14 +189,16 @@ public class GameController implements ActionListener
         // Opens a panel containing player attacking moves.
         else if (command.equals("Fight")) {
             //******************************
-            //Logic to hit enemys and swap to next enemy.
-            getEnemy(0).setCurrentHealth(getEnemy(0).getCurrentHealth() - 50);
+            //Logic to hit enemies and swap to next enemy.
+            Enemy currentEnemy = getEnemy(0);
+            currentEnemy.setCurrentHealth(currentEnemy.getCurrentHealth() - 50);
 
-            System.out.println(getEnemy(0).getCurrentHealth());
-            if (getEnemy(0).getCurrentHealth() <= 0) {
+            System.out.println(currentEnemy.getCurrentHealth());
+            if (currentEnemy.getCurrentHealth() <= 0) {
                 if (enemies.size() > 1) {
                     enemies.remove(0);
                     System.out.println("New Enemy appears");
+                    update();
                 } else if (enemies.size() == 1) {
                     System.out.println("You won!");
                 }
@@ -205,7 +207,7 @@ public class GameController implements ActionListener
 
 
             //****************************
-            //Logic to take dmg from enemys
+            //Logic to take dmg from enemies
             player.setCurrentHealth(player.getCurrentHealth() - 1);
             System.out.print("PLayer health is now: ");
             System.out.println(player.getCurrentHealth());
@@ -273,6 +275,20 @@ public class GameController implements ActionListener
         enemies.add(new SecretBoss());
     }
 
+    // Update panel after victory
+    private void update() {
+        BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
+
+        // Update enemy to next enemy
+        if (!enemies.isEmpty()) {
+            Enemy currentEnemy = getEnemy(0);
+
+            battlePanel.getEnemyPanel().updateEntity(currentEnemy);
+
+            battlePanel.revalidate();
+            battlePanel.repaint();
+        }
+    }
 
     public void setPlayer(Player player)
     {

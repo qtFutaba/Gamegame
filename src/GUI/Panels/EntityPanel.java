@@ -84,4 +84,15 @@ public class EntityPanel extends JPanel
             g2d.drawImage(sprite, playerSpriteX, playerSpriteY, spriteWidth, spriteHeight, this);
         }
     }
+
+    // Updates entity upon battle victory
+    public void updateEntity(Entity entity) {
+        this.entity = entity;
+        if (entity.getSprite() != null) {
+            this.sprite = new ImageIcon(entity.getSprite()).getImage();
+        }
+
+        this.revalidate();
+        this.repaint();
+    }
 }
