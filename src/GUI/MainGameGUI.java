@@ -51,8 +51,10 @@ public class MainGameGUI extends JFrame
         container.add(views[0], "mainmenu");           //COMPONENT 0
         container.add(views[1], "leaderboard");        //COMPONENT 1
         container.add(views[2], "charactercreation");  //COMPONENT 2
-        container.add(views[3], "gameover");           //COMPONENT 3
-        container.add(views[4], "victory");            //COMPONENT 4
+        container.add(views[3], "battle");           //COMPONENT 3
+        container.add(views[4], "selectreward");    //COMPONENT 4
+        container.add(views[5], "gameover");        //COMPONENT 5
+        container.add(views[6],"victory");          //COMPONENT 6
 
         // Show the main menu view in the card layout first.
         cardLayout.show(container, "mainmenu");

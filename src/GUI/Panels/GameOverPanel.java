@@ -16,7 +16,7 @@ public class GameOverPanel extends JPanel
         label.setForeground(Color.RED);
 
         // Create the new game button.
-        JButton newGameButton = new JButton("New Game");
+        JButton newGameButton = new JButton("Try Again");
         newGameButton.addActionListener(gc);
 
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -30,7 +30,7 @@ public class GameOverPanel extends JPanel
         newGameButtonBuffer.add(newGameButton);
 
         // Create the leaderboard button.
-        JButton leaderboardButton = new JButton("Leaderboard");
+        JButton leaderboardButton = new JButton("Main Menu");
         leaderboardButton.addActionListener(gc);
         leaderboardButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         leaderboardButton.setBackground(Color.BLACK);

@@ -46,8 +46,7 @@ public class GameController implements ActionListener
     }
 
     // Handle button clicks.
-    public void actionPerformed(ActionEvent ae)
-    {
+    public void actionPerformed(ActionEvent ae) {
         // Get the name of the button clicked.
         String command = ae.getActionCommand();
 
@@ -61,8 +60,7 @@ public class GameController implements ActionListener
         Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 
         // Select Warrior.
-        if (command.equals("Warrior"))
-        {
+        if (command.equals("Warrior")) {
             classChoice = "Warrior";
             panel.warriorButton.setBorder(BorderFactory.createCompoundBorder(selectedBorder, paddingBorder));
             panel.mageButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
@@ -70,8 +68,7 @@ public class GameController implements ActionListener
         }
 
         // Select Mage.
-        else if (command.equals("Mage"))
-        {
+        else if (command.equals("Mage")) {
             classChoice = "Mage";
             panel.warriorButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
             panel.mageButton.setBorder(BorderFactory.createCompoundBorder(selectedBorder, paddingBorder));
@@ -79,8 +76,7 @@ public class GameController implements ActionListener
         }
 
         // Select Paladin.
-        else if (command.equals("Paladin"))
-        {
+        else if (command.equals("Paladin")) {
             classChoice = "Paladin";
             panel.warriorButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
             panel.mageButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
@@ -93,21 +89,14 @@ public class GameController implements ActionListener
             String playerName = panel.getNameFieldText();
 
             // Check if the name is empty
-            if (playerName.isEmpty())
-            {
+            if (playerName.isEmpty()) {
                 showError(panel, "You must have a name, right?");
-            }
-
-            else if (classChoice.equals(""))
-            {
+            } else if (classChoice.equals("")) {
                 showError(panel, "You must choose a class.");
-            }
-            else
-            {
+            } else {
                 player.setName(playerName);
 
-                switch(classChoice)
-                {
+                switch (classChoice) {
                     case "Warrior":
                         player.setSprite("src/Sprites/warriorplayer.png");
                         player.setStat(player.HIGH);
@@ -166,24 +155,21 @@ public class GameController implements ActionListener
         //MAIN MENU
         //-----------------------------------------------------------------------
         // Start the game.
-        else if (command.equals("New Game"))
-        {
+        else if (command.equals("New Game")) {
             //CharacterCreationPanel newgamePanel = (CharacterCreationPanel) container.getComponent(2);
-            CardLayout cardLayout = (CardLayout)container.getLayout();
+            CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "charactercreation");
         }
 
         // Opens a high score panel.
-        else if (command.equals("Leaderboard"))
-        {
+        else if (command.equals("Leaderboard")) {
             //LeaderboardPanel scoresPanel = (LeaderboardPanel) container.getComponent(1);
-            CardLayout cardLayout = (CardLayout)container.getLayout();
+            CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "leaderboard");
         }
 
         // Quit game.
-        else if (command.equals("Exit Game"))
-        {
+        else if (command.equals("Exit Game")) {
             System.exit(0);
         }
 
@@ -191,10 +177,9 @@ public class GameController implements ActionListener
         //LEADERBOARD
         //-----------------------------------------------------------------------
         // Return to main menu.
-        else if (command.equals("Return to Main Menu."))
-        {
+        else if (command.equals("Return to Main Menu.")) {
             //MainMenuPanel mainMenuPanel = (MainMenuPanel) container.getComponent(0);
-            CardLayout cardLayout = (CardLayout)container.getLayout();
+            CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "mainmenu");
         }
 
@@ -202,15 +187,14 @@ public class GameController implements ActionListener
         //BATTLE
         //-----------------------------------------------------------------------
         // Opens a panel containing player attacking moves.
-        else if (command.equals("Fight"))
-        {
+        else if (command.equals("Fight")) {
             //******************************
             //Logic to hit enemys and swap to next enemy.
-            getEnemy(0).setCurrentHealth(getEnemy(0).getCurrentHealth()-50);
+            getEnemy(0).setCurrentHealth(getEnemy(0).getCurrentHealth() - 50);
 
             System.out.println(getEnemy(0).getCurrentHealth());
-            if (getEnemy(0).getCurrentHealth() <= 0){
-                if (enemies.size() > 1){
+            if (getEnemy(0).getCurrentHealth() <= 0) {
+                if (enemies.size() > 1) {
                     enemies.remove(0);
                     System.out.println("New Enemy appears");
                 } else if (enemies.size() == 1) {
@@ -222,7 +206,7 @@ public class GameController implements ActionListener
 
             //****************************
             //Logic to take dmg from enemys
-            player.setCurrentHealth(player.getCurrentHealth()-1);
+            player.setCurrentHealth(player.getCurrentHealth() - 1);
             System.out.print("PLayer health is now: ");
             System.out.println(player.getCurrentHealth());
 
@@ -230,14 +214,12 @@ public class GameController implements ActionListener
         }
 
         // Open a panel consisting of "Block" and "Heal" (Limited uses)
-        else if (command.equals("Utility"))
-        {
+        else if (command.equals("Utility")) {
 
         }
 
         // Surrender the fight to enter game over state without losing gold.
-        else if (command.equals("Surrender"))
-        {
+        else if (command.equals("Surrender")) {
 
         }
         //-----------------------------------------------------------------------
@@ -247,9 +229,50 @@ public class GameController implements ActionListener
         //-----------------------------------------------------------------------
         //VICTORY OR GAME OVER
         //-----------------------------------------------------------------------
+        if (player.getCurrentHealth() <= 0) {
+
+            reset();
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "gameover");
+            System.out.println("You are dead");
+
+        } else if (enemies.size()==1) {
+            reset();
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "victory");
+            System.out.println("Victory");
+        }
+
+        ///Buttons for GAMEOVER
+        if (command.equals("Try Again")) {
+
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "battle");
+        }
+        else if (command.equals("Main Menu")) {
+
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "mainmenu");
+        }
 
 
     }
+
+    //Resets the player and enemy list
+    public void reset() {
+        this.player = new Player();
+        this.enemies = new ArrayList<>();
+        battleCounter = 0;
+        this.classChoice = "";
+
+        enemies.add(new Goblin());
+        enemies.add(new Wizard());
+        enemies.add(new Orc());
+        enemies.add(new Knight());
+        enemies.add(new Dragon());
+        enemies.add(new SecretBoss());
+    }
+
 
     public void setPlayer(Player player)
     {
