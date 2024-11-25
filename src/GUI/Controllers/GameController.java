@@ -18,6 +18,7 @@ public class GameController implements ActionListener
     private List<Enemy> enemies;
     private int battleCounter;
     private String classChoice;
+    private BattlePanel firstBattle;
 
 
     // Constructor for the initial controller.
@@ -152,7 +153,7 @@ public class GameController implements ActionListener
                         break;
                 }
 
-                BattlePanel firstBattle = new BattlePanel(this);
+                firstBattle = new BattlePanel(this);
                 container.add(firstBattle, "battle");
 
                 CardLayout cardLayout = (CardLayout) container.getLayout();
@@ -203,7 +204,29 @@ public class GameController implements ActionListener
         // Opens a panel containing player attacking moves.
         else if (command.equals("Fight"))
         {
+            //******************************
+            //Logic to hit enemys and swap to next enemy.
+            getEnemy(0).setCurrentHealth(getEnemy(0).getCurrentHealth()-50);
 
+            System.out.println(getEnemy(0).getCurrentHealth());
+            if (getEnemy(0).getCurrentHealth() <= 0){
+                if (enemies.size() > 1){
+                    enemies.remove(0);
+                    System.out.println("New Enemy appears");
+                } else if (enemies.size() == 1) {
+                    System.out.println("You won!");
+                }
+            }
+            //*****************************
+
+
+            //****************************
+            //Logic to take dmg from enemys
+            player.setCurrentHealth(player.getCurrentHealth()-1);
+            System.out.print("PLayer health is now: ");
+            System.out.println(player.getCurrentHealth());
+
+            //****************************
         }
 
         // Open a panel consisting of "Block" and "Heal" (Limited uses)

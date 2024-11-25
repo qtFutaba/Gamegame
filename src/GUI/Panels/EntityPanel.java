@@ -4,19 +4,22 @@ import Game.Entities.*;
 
 import java.awt.*;
 import javax.swing.*;
+import GUI.Controllers.*;
 
 public class EntityPanel extends JPanel
 {
 
     private Entity entity;
     private Image sprite;
+    private GameController gc;
+    private Graphics2D g2d;
 
-    public EntityPanel(Entity entity)
+    public EntityPanel(Entity entity, GameController gc)
     {
         this.setBackground(Color.BLACK); // Set the background color
         this.setPreferredSize(new Dimension(350, 350)); // Set preferred size
         this.entity = entity;
-
+        this.gc = gc;
         // Load sprites
         sprite = new ImageIcon(entity.getSprite()).getImage();
     }
@@ -26,7 +29,7 @@ public class EntityPanel extends JPanel
     {
         super.paintComponent(g);
 
-        Graphics2D g2d = (Graphics2D) g;
+        g2d = (Graphics2D) g;
 
         // FONTMETRICS TO CALCULATE NAME TEXT WIDTH
         FontMetrics fm = g2d.getFontMetrics(new Font("Viner Hand ITC", Font.BOLD, 20));
@@ -62,9 +65,11 @@ public class EntityPanel extends JPanel
         g2d.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
 
         // TEXT
+        int currentHP = gc.getEnemy(0).getCurrentHealth();
+        int MaxHP = gc.getEnemy(0).getMaxHealth();
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        g2d.drawString("HP: 100/100", healthBarX + healthBarWidth / 2 - g2d.getFontMetrics().stringWidth("HP: 100/100") / 2, healthBarY + 20);
+        g2d.drawString("HP: " + currentHP + "/" + MaxHP, healthBarX + healthBarWidth / 2 - g2d.getFontMetrics().stringWidth("HP: 100/100") / 2, healthBarY + 20);
 
         // SPRITE
         if (sprite != null)

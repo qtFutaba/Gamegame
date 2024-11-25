@@ -38,12 +38,12 @@ public class BattlePanel extends JPanel
         // Create the actual battle scene.
         //----------------------------------------------------------------------------------------------------------------
         Dimension sceneSize = new Dimension(350, 350);
-        playerPanel = new EntityPanel(gc.getPlayer());
+        playerPanel = new EntityPanel(gc.getPlayer(), gc);
         playerPanel.setPreferredSize(sceneSize);
         playerPanel.setMinimumSize(sceneSize);
         playerPanel.setMaximumSize(sceneSize);
 
-        enemyPanel = new EntityPanel(gc.getEnemy(gc.getBattleCounter()));
+        enemyPanel = new EntityPanel(gc.getEnemy(gc.getBattleCounter()),gc);
         enemyPanel.setPreferredSize(sceneSize);
         enemyPanel.setMinimumSize(sceneSize);
         enemyPanel.setMaximumSize(sceneSize);
