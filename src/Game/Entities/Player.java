@@ -11,8 +11,8 @@ public class Player extends Entity {
 
     public Player()
     {
-        setMaxHealth(5);
-        setCurrentHealth(5);
+        setMaxHealth(100);
+        setCurrentHealth(100);
         setName("Player");
 
         gear = new ArrayList<Gear>();
@@ -23,7 +23,7 @@ public class Player extends Entity {
                 "Leather Scraps", 0, 1, 0);
         gear.add(Dagger);
         gear.add(LeatherScraps);
-        coinPurse = 0;
+        coinPurse = 50;
     }
 
     public List<Gear> getGear(){return gear;}

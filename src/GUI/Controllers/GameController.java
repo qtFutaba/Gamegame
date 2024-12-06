@@ -1,7 +1,9 @@
 package GUI.Controllers;
 
 import GUI.Panels.*;
+import GUI.Panels.ItemPanel;
 import Game.Entities.*;
+import src.Game.Item;
 
 import java.awt.*;
 import javax.swing.*;
@@ -195,6 +197,11 @@ public class GameController implements ActionListener
 
             System.out.println(currentEnemy.getCurrentHealth());
             if (currentEnemy.getCurrentHealth() <= 0) {
+                // Prompt user to choose an award
+                selectReward();
+                CardLayout cardLayout = (CardLayout) container.getLayout();
+                cardLayout.show(container, "selectreward");
+
                 if (enemies.size() > 1) {
                     enemies.remove(0);
                     System.out.println("New Enemy appears");
@@ -227,12 +234,16 @@ public class GameController implements ActionListener
         //-----------------------------------------------------------------------
         //SELECT REWARD
         //-----------------------------------------------------------------------
+        else if (command.equals("Return to Battle")) {
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "battle");
+            System.out.println("We are exiting the shop!");
+        }
 
         //-----------------------------------------------------------------------
         //VICTORY OR GAME OVER
         //-----------------------------------------------------------------------
         if (player.getCurrentHealth() <= 0) {
-
             reset();
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "gameover");
@@ -276,18 +287,31 @@ public class GameController implements ActionListener
     }
 
     // Update panel after victory
-    private void update() {
-        BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
-
-        // Update enemy to next enemy
+    public void update() {
+        // Update enemy
         if (!enemies.isEmpty()) {
             Enemy currentEnemy = getEnemy(0);
+            if (currentEnemy != null) {
+                // Remove former BattlePanel
+                container.remove(firstBattle);
 
-            battlePanel.getEnemyPanel().updateEntity(currentEnemy);
+                // Update BattlePanel & Sprite
+                firstBattle = new BattlePanel(this);
+                firstBattle.getEnemyPanel().updateEntity(currentEnemy);
 
-            battlePanel.revalidate();
-            battlePanel.repaint();
+                // Add BattlePanel back to container
+                container.add(firstBattle, "battle");
+
+                // Refresh container
+                container.revalidate();
+                container.repaint();
+            }
         }
+    }
+
+    public void selectReward() {
+        ItemPanel itemPanel = new ItemPanel(this);
+        container.add(itemPanel, "selectreward");
     }
 
     public void setPlayer(Player player)
@@ -366,5 +390,41 @@ public class GameController implements ActionListener
         dialog.setVisible(true);
     }
 
+    /// ///////////////////////////////////////////
+    ///         UPDATES UPON ITEM PURCHASE
+    /// ///////////////////////////////////////////
+
+    public String rewardSelection(Item selectedItem) {
+        String message = ""; // Message to be displayed upon item purchase (if purchase fails)
+
+        // Add item to player Gear if they can afford item
+        if (player.getCoinPurse() >= selectedItem.itemPrice) {
+            player.AddCoinPurse(-selectedItem.itemPrice); // Deduct coins
+            player.AddGear(new Game.Gear( // Add gear
+                    selectedItem.itemName,+
+                    selectedItem.attackBoost,
+                    selectedItem.defenseBoost,
+                    selectedItem.magicBoost
+            ));
+            System.out.println("Player has enough coins.");
+
+            // Return to battle
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "battle");
+        } else {
+            // Message to reject purchase
+            message = "Not enough coins to purchase: " + selectedItem.itemName + ".";
+            System.out.println("Player does not have enough coins.");
+        }
+
+        // List current gear (for testing)
+        System.out.println("Current Gear:");
+        List<Game.Gear> gear = player.getGear();
+        for (Game.Gear g : gear) {
+            System.out.println(g.getName());
+        }
+
+        return message;
+    }
 
 }

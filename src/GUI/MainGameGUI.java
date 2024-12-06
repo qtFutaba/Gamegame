@@ -41,7 +41,7 @@ public class MainGameGUI extends JFrame
         views[1] = new LeaderboardPanel(gc);
         views[2] = new CharacterCreationPanel(gc);
         views[3] = new BattlePanel(gc);
-        views[4] = new SelectRewardPanel(gc);
+        views[4] = new ItemPanel(gc);
         views[5] = new GameOverPanel(gc);
         views[6] = new VictoryPanel(gc);
 
