@@ -4,25 +4,26 @@ import Game.Entities.Player;
 
 public class Gear
 {
-    private String name;
-    private int atkBuff;
-    private int defBuff;
-    private int magBuff;
-    private int healthBuff;
-    private boolean isBuff;
-    private boolean isAction;
-    private boolean isAttack;
-    private boolean isMisc;
+    public String name;
+    public int atkBuff;
+    public int defBuff;
+    public int magBuff;
+    public int healthBuff;
+    public boolean isBuff;
+    public boolean isAction;
+    public boolean isAttack;
+    public boolean isMisc;
 
-    public Gear(String name, int atkBuff, int defBuff, int magBuff, int healthBuff, boolean isBuff, boolean isAction, boolean isMisc) {
-        this.name = name;
-        this.atkBuff = atkBuff;
-        this.defBuff = defBuff;
-        this.magBuff = magBuff;
-        this.healthBuff = healthBuff;
-        this.isBuff = isBuff;
-        this.isAction = isAction;
-        this.isMisc = isMisc;
+    public Gear() {
+        this.name = "Default Gear";
+        this.atkBuff = 0;
+        this.defBuff = 0;
+        this.magBuff = 0;
+        this.healthBuff = 0;
+        this.isBuff = false;
+        this.isAction = false;
+        this.isAttack = false;
+        this.isMisc = false;
     }
     public String getName() {return name;}
     public int getAtkBuff() {return atkBuff;}

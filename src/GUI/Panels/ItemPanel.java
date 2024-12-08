@@ -146,6 +146,9 @@ public class ItemPanel extends JPanel {
         // Create list to contain options for ItemPanel
         List<Item> options = new ArrayList<>();
 
+        // Create list of player's current gear to avoid duplicates
+        List<Item> playerItems = (List<Item>) (List<?>) gc.getPlayer().getGear();
+
         // Randomly select items based on rarity
         Random rand = new Random();
 
@@ -177,7 +180,7 @@ public class ItemPanel extends JPanel {
             }
 
             // Do not include duplicates in shop
-            if (!options.contains(item)) {
+            if (!playerItems.contains(item) && !options.contains(item)) {
                 options.add(item);
             }
         }
@@ -196,7 +199,7 @@ public class ItemPanel extends JPanel {
         itemPanel.setLayout(new BorderLayout());
 
         // Create buttons for each item
-        JButton selectButton = new JButton(item.itemName);
+        JButton selectButton = new JButton(item.name);
         selectButton.setBackground(Color.BLACK);
         selectButton.setForeground(Color.YELLOW);
         selectButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 18));

@@ -2,29 +2,22 @@ package src.Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import Game.Gear;
 
-
-public class Item {
-    public String itemName;
+public class Item extends Gear {
     public String itemDescription;
     public int itemPrice;
     public int rarity;
-    public int attackBoost;
-    public int defenseBoost;
-    public int magicBoost;
-    public int healthBuff;
-    public boolean isBuff;
-    public boolean isAction;
-    public boolean isMisc;
 
     public Item() {
-        this.itemName = "Default item";
+        super();
+        this.name = "Default item";
         this.itemDescription = "A default item.";
         this.rarity = 1;
         this.itemPrice = 0;
-        this.attackBoost = 0;
-        this.defenseBoost = 0;
-        this.magicBoost = 0;
+        this.atkBuff = 0;
+        this.defBuff = 0;
+        this.magBuff = 0;
         this.healthBuff = 0;
         this.isBuff = false;
         this.isAction = false;
@@ -45,10 +38,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Ring of Bone";
+            this.name = "Ring of Bone";
 
             // Set item stats
-            this.attackBoost = 9;
+            this.atkBuff = 22;
 
             // Set item price
             this.itemPrice = 35;
@@ -80,10 +73,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Jar of Mushrooms";
+            this.name = "Jar of Mushrooms";
 
             // Set item stats
-            this.attackBoost = 6;
+            this.atkBuff = 15;
 
             // Set item price
             this.itemPrice = 22;
@@ -116,10 +109,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Hellfire Pepper";
+            this.name = "Hellfire Pepper";
 
             // Set item stats
-            this.attackBoost = 3;
+            this.atkBuff = 6;
 
             // Set item price
             this.itemPrice = 8;
@@ -155,10 +148,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Naglfar Fragment";
+            this.name = "Naglfar Fragment";
 
             // Set item stats
-            this.defenseBoost = 10;
+            this.defBuff = 30;
 
             // Set item price
             this.itemPrice = 40;
@@ -191,10 +184,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Sock";
+            this.name = "Sock";
 
             // Set item stats
-            this.defenseBoost = 2;
+            this.defBuff = 6;
 
             // Set item price
             this.itemPrice = 5;
@@ -225,10 +218,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Nazar";
+            this.name = "Nazar";
 
             // Set item stats
-            this.defenseBoost = 7;
+            this.defBuff = 19;
 
             // Set item price
             this.itemPrice = 25;
@@ -262,10 +255,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Crown of the Fallen King";
+            this.name = "Crown of the Fallen King";
 
             // Set item stats
-            this.magicBoost = 10;
+            this.magBuff = 29;
 
             // Set item price
             this.itemPrice = 40;
@@ -298,10 +291,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Cloak of Swift Casting";
+            this.name = "Cloak of Swift Casting";
 
             // Set item stats
-            this.magicBoost = 7;
+            this.magBuff = 18;
 
             // Set item price
             this.itemPrice = 25;
@@ -332,10 +325,10 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Fortune Cookie";
+            this.name = "Fortune Cookie";
 
             // Set item stats
-            this.magicBoost = 3;
+            this.magBuff = 7;
 
             // Set item price
             this.itemPrice = 9;
@@ -369,7 +362,7 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Soy Milk";
+            this.name = "Soy Milk";
 
             // Set item price
             this.itemPrice = 10;
@@ -378,9 +371,9 @@ public class Item {
             this.rarity = 1;
 
             // Set item type
-            this.isBuff = true;
+            this.isBuff = false;
             this.isAction = false;
-            this.isMisc = false;
+            this.isMisc = true;
 
             // Item description line
             String customDescription = "It smells... overpriced.\nYou scratch your head in confusion. Why is this here? " +
@@ -400,7 +393,7 @@ public class Item {
             super();
 
             // Set item name
-            this.itemName = "Mysterious Liquid";
+            this.name = "Mysterious Liquid";
 
             // Set item price
             this.itemPrice = 25;
@@ -409,13 +402,14 @@ public class Item {
             this.rarity = 2;
 
             // Set item type
-            this.isBuff = true;
+            this.isBuff = false;
             this.isAction = false;
-            this.isMisc = false;
+            this.isMisc = true;
 
             // Item description line
-            String customDescription = "It's glowing, and it smells like cigarettes and cheap perfume— like something" +
-                    "you'd find at a shady motel.";
+            String customDescription = "It's glowing, and it smells like cigarettes and cheap perfume— like " +
+                    "something you'd find at a shady motel. They say it'll bring you back to life upon death, but " +
+                    "honestly, it probably comes with a few side effects— like a permanent sense of regret.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
@@ -434,14 +428,14 @@ public class Item {
         List<String> boosts = new ArrayList<>();
 
         // Store stat boost information into ArrayList
-        if (defenseBoost > 0) {
-            boosts.add("DEF (+ " + defenseBoost + ")");
+        if (defBuff > 0) {
+            boosts.add("DEF (+ " + defBuff + ")");
         }
-        if (attackBoost > 0) {
-            boosts.add("ATK (+ " + attackBoost + ")");
+        if (atkBuff > 0) {
+            boosts.add("ATK (+ " + atkBuff + ")");
         }
-        if (magicBoost > 0) {
-            boosts.add("MAG (+ " + magicBoost + ")");
+        if (magBuff > 0) {
+            boosts.add("MAG (+ " + magBuff + ")");
         }
 
         // Display rarity

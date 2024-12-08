@@ -201,8 +201,8 @@ public class GameController implements ActionListener
 
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "battle");
-            System.out.println("We are exiting the shop!");
         }
+
 
         //-----------------------------------------------------------------------
         //VICTORY OR GAME OVER
@@ -796,21 +796,33 @@ public class GameController implements ActionListener
         // Add item to player Gear if they can afford item
         if (player.getCoinPurse() >= selectedItem.itemPrice) {
             player.AddCoinPurse(-selectedItem.itemPrice); // Deduct coins
-            player.AddGear(new Game.Gear( // Add gear
-                    selectedItem.itemName,+
-                    selectedItem.attackBoost,
-                    selectedItem.defenseBoost,
-                    selectedItem.magicBoost,
-                    selectedItem.healthBuff,
-                    selectedItem.isBuff,
-                    selectedItem.isAction,
-                    selectedItem.isMisc
-            ));
-            System.out.println("Player has enough coins.");
+            player.AddGear(selectedItem);
         } else {
             // Message to reject purchase
-            message = "Not enough coins to purchase: " + selectedItem.itemName + ".";
-            System.out.println("Player does not have enough coins.");
+            message = "Not enough coins to purchase: " + selectedItem.name + ".";
+        }
+
+        // Add buffs/attacks/misc to player
+        if (selectedItem.isBuff) {
+            // Buff = % of stat to add to current stat, round up to nearest int
+            int attack = player.getAttack();
+            int defense = player.getDefense();
+            int magic = player.getMagic();
+
+            player.setAttack((int) Math.ceil(attack + (attack * (selectedItem.atkBuff / 100.0))));
+            player.setDefense((int) Math.ceil(defense + (defense * (selectedItem.defBuff / 100.0))));
+            player.setMagic((int) Math.ceil(magic + (magic * (selectedItem.magBuff / 100.0))));
+        } else if (selectedItem.isAction) {
+            // LOGIC TO ADD ACTIONS TO PANEL
+        } else if (selectedItem.isMisc) {
+            Item soyMilk = new Item.SoyMilk();
+            Item mysteriousLiquid = new Item.MysteriousLiquid();
+
+            if (selectedItem.equals(soyMilk)) {
+                // LOGIC TO DEDUCT SECRET BOSS HEALTH
+            } else if (selectedItem.equals(mysteriousLiquid)) {
+                // LOGIC TO FULLY REGENERATE PLAYER HEALTH UPON DEATH
+            }
         }
 
         // List current gear (for testing)
@@ -821,20 +833,6 @@ public class GameController implements ActionListener
         }
 
         return message;
-    }
-
-    public void selectReward() {
-        ItemPanel itemPanel = new ItemPanel(this);
-        container.add(itemPanel, "selectreward");
-    }
-
-    public boolean inInventory(Item item) {
-        for (Gear g : player.getGear()) {
-            if (g.getName().equals(item.itemName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
