@@ -1,5 +1,8 @@
 package Game.Entities;
 
+import Game.Action;
+import Game.Attack;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -25,8 +28,8 @@ public class Goblin extends Enemy {
 
     public Goblin() {
         this.setName("Goblin");
-        this.setMaxHealth(100);
-        this.setCurrentHealth(100);
+        this.setMaxHealth(60);
+        this.setCurrentHealth(60);
         this.setCoinReward(20);
         this.setSprite("src/Sprites/goblin.png");
         this.setStat("low");
@@ -34,7 +37,13 @@ public class Goblin extends Enemy {
         this.setStat("low");
         this.setDefense(this.getStat());
         this.setStat("low");
-        this.setMagicPoints(this.getStat());
+        this.setMagic(this.getStat());
+        this.setTurnWasteChance(45);
+
+        this.attacks.add(new Attack("Stab", "Physical", 30, 20, 20));
+        this.attacks.add(new Attack("Stab", "Physical", 50, 5, 5));
+
+        this.actions.add(new Action("Stall", false, 1));
     }
 
     public String getGreeting() {

@@ -3,10 +3,19 @@ package Game;
 public class Attack
 {
     private String name;
+    private String type;
     private int power;
     private int uses;
     private int maxUses;
 
+    public Attack(String name, String type, int power, int uses, int maxUses)
+    {
+        this.name = name;
+        this.type = type;
+        this.power = power;
+        this.uses = uses;
+        this.maxUses = maxUses;
+    }
     public String getName() {
         return name;
     }
@@ -30,5 +39,13 @@ public class Attack
     }
     public void setMaxUses(int maxUses) {
         this.maxUses = maxUses;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

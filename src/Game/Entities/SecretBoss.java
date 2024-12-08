@@ -19,8 +19,8 @@ public class SecretBoss extends Enemy {
 
     public SecretBoss() {
         this.setName("Dr. Baarsch");
-        this.setMaxHealth(700);
-        this.setCurrentHealth(700);
+        this.setMaxHealth(200);
+        this.setCurrentHealth(200);
         this.setCoinReward(400);
         this.setSprite("src/Sprites/secretboss.png");
         this.setStat("ultra");
@@ -28,7 +28,8 @@ public class SecretBoss extends Enemy {
         this.setStat("high");
         this.setDefense(this.getStat());
         this.setStat("high");
-        this.setMagicPoints(this.getStat());
+        this.setMagic(this.getStat());
+        this.setTurnWasteChance(25);
     }
 
 
@@ -49,6 +50,20 @@ public class SecretBoss extends Enemy {
 
     public String getAttackMsg() {
         return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
+    }
+
+    public void soyMilkPresent(boolean present)
+    {
+        if (present)
+        {
+            this.setStat("low");
+            this.setAttack(this.getStat());
+            this.setStat("low");
+            this.setDefense(this.getStat());
+            this.setStat("low");
+            this.setMagic(this.getStat());
+            this.setTurnWasteChance(40);
+        }
     }
 
 }

@@ -1,63 +1,72 @@
 package GUI.Panels;
 
-import GUI.Controllers.*;
+import GUI.Controllers.GameController;
 import src.Game.Item;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import javax.swing.*;
 
-public class ItemPanel extends JPanel
-{
+public class ItemPanel extends JPanel {
     private JLabel messageLabel;
+    public boolean itemPurchased = false;
+    private JPanel itemPanel;
+    private JTextField itemLog;
+    private boolean needSoyMilk;
 
-    public ItemPanel(GameController gc)
-    {
+    public ItemPanel(GameController gc) {
         this.setLayout(new BorderLayout());
 
-        /// ///////////////////////////////////////////
-        ///                ITEM PANEL
-        /// ///////////////////////////////////////////
-
-        // Create item selection message box (top)
-        JTextField itemLog = new JTextField();
-        itemLog.setEditable(false);
-        itemLog.setText("You may choose an item.");
-        itemLog.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        itemLog.setBackground(Color.BLACK);
-        itemLog.setForeground(Color.WHITE);
-
-        itemLog.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-        itemLog.setHorizontalAlignment(JTextField.CENTER);
-
-        Dimension logSize = new Dimension(1000, 100);
-        itemLog.setPreferredSize(logSize);
-        itemLog.setMinimumSize(logSize);
-        itemLog.setMaximumSize(logSize);
-
-        // Add itemLog to panel
+        this.itemLog = createItemLog();
         this.add(itemLog, BorderLayout.NORTH);
 
-        // Create itemPanel
-        JPanel itemPanel = new JPanel();
-        itemPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        itemPanel.setBackground(Color.BLACK);
-
-        // Generate items
-        List<Item> items = generateItems();
-
-        // Create icons for items
-        for (Item item : items) {
-            JPanel itemIcon = createItemIcon(item, gc);
-            itemPanel.add(itemIcon);
-        }
-
-        // Add items to itemPanel
+        this.itemPanel = createItemPanel(gc);
         this.add(itemPanel, BorderLayout.CENTER);
 
+        JPanel messagePanel = createMessagePanel(gc);
+        this.add(messagePanel, BorderLayout.SOUTH);
+    }
+
+    /// ///////////////////////////////////////////
+    ///             HELPER METHODS
+    /// ///////////////////////////////////////////
+
+    private JTextField createItemLog() {
+        // Create item selection message box (top)
+        JTextField log = new JTextField("You may choose an item.");
+        log.setEditable(false);
+        log.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        log.setBackground(Color.BLACK);
+        log.setForeground(Color.WHITE);
+        log.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        log.setHorizontalAlignment(JTextField.CENTER);
+
+        Dimension logSize = new Dimension(1000, 100);
+        log.setPreferredSize(logSize);
+        log.setMinimumSize(logSize);
+        log.setMaximumSize(logSize);
+
+        return log;
+    }
+
+    private JPanel createItemPanel(GameController gc) {
+        // Create itemPanel
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        panel.setBackground(Color.BLACK);
+
+        // Generate items and display in panel
+        List<Item> items = generateItems(gc);
+        for (Item item : items) {
+            JPanel itemIcon = createItemIcon(item, gc);
+            panel.add(itemIcon);
+        }
+
+        return panel;
+    }
+
+    private JPanel createMessagePanel(GameController gc) {
         // Panel for message (bottom)
         JPanel messagePanel = new JPanel(new BorderLayout());
         messagePanel.setBackground(Color.BLACK);
@@ -68,55 +77,110 @@ public class ItemPanel extends JPanel
         messageLabel.setForeground(Color.YELLOW);
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         messageLabel.setOpaque(true);
-
-        // Add messageLabel to messagePanel (which also contains exitButton)
         messagePanel.add(messageLabel, BorderLayout.CENTER);
 
-        // Panel for the exit button
+        // Create "Next Battle" (exit) button
         JPanel exitPanel = new JPanel(new BorderLayout());
-        JButton exitButton = new JButton("Return to Battle");
+        JButton exitButton = new JButton("Next Battle");
         exitButton.setBackground(Color.BLACK);
         exitButton.setForeground(Color.RED);
         exitButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
         exitButton.setOpaque(true);
         exitButton.addActionListener(gc);
-
-        // Add exitButton to exitPanel
         exitPanel.add(exitButton);
 
-        // Add exitPanel to messagePanel (so both can be at bottom of screen)
         messagePanel.add(exitPanel, BorderLayout.EAST);
-        this.add(messagePanel, BorderLayout.SOUTH);
+        return messagePanel;
+    }
+
+    /// ///////////////////////////////////////////
+    ///             RESET PANEL
+    /// ///////////////////////////////////////////
+
+    public void resetPanel(GameController gc) {
+        // Reset ItemPanel for new items
+        this.itemPanel.removeAll();
+        List<Item> items = generateItems(gc);
+
+        // Add items to ItemPanel
+        for (Item item : items) {
+            JPanel itemIcon = createItemIcon(item, gc);
+            this.itemPanel.add(itemIcon);
+        }
+
+        // Reset item purchase state
+        itemPurchased = false;
+
+        // Reset message
+        this.itemLog.setText("You may choose an item.");
+        this.messageLabel.setText("Select an item.");
+        this.messageLabel.setForeground(Color.YELLOW);
+
+        // Refresh panel
+        this.revalidate();
+        this.repaint();
     }
 
     /// ///////////////////////////////////////////
     ///             ITEM GENERATION
     /// ///////////////////////////////////////////
 
-    public List<Item> generateItems() {
-        /*  NOTE: THIS IS A WORK-IN-PROGRESS!!
-         *  TO-DO:
-         *      Create randomization process for item generation, based on:
-         *          - Item rarity
-         *          - Whether player currently owns item or not
-         *          - Boss fight (before final boss = guaranteed soy milk)
-         */
-
-        // Create list of all possible items
+    public List<Item> generateItems(GameController gc) {
+        // Create list of possible items
         List<Item> items = Item.getItems();
 
-        // Shuffle item list
-        Collections.shuffle(items, new Random());
+        // Create lists containing items of each rarity
+        List<Item> commonItems = new ArrayList<>();
+        List<Item> rareItems = new ArrayList<>();
+        List<Item> legendaryItems = new ArrayList<>();
 
-        // Create list containing random items for player to choose from
-        List<Item> options = new ArrayList<Item>();
+        // Add items of each rarity to corresponding list
+        for (Item item : items) {
+            switch (item.rarity) {
+                case 1 -> commonItems.add(item);
+                case 2 -> rareItems.add(item);
+                case 3 -> legendaryItems.add(item);
+            }
+        }
 
-        // Add first three items to option list
-        options.add(items.get(0));
-        options.add(items.get(1));
-        options.add(items.get(2));
+        // Create list to contain options for ItemPanel
+        List<Item> options = new ArrayList<>();
 
-        // Return options
+        // Randomly select items based on rarity
+        Random rand = new Random();
+
+        while (options.size() < 3) {
+            // Automatically place SoyMilk in shop before final battle
+            if (needSoyMilk) {
+                Item soyMilk = new Item.SoyMilk();
+                options.add(soyMilk);
+                continue;
+            }
+
+            /*  -------------------------------------------
+             *  ITEM RARITY REFERENCE:
+             *  - COMMON:       21/50   =   42.00% chance
+             *  - RARE:         1/3     =   33.00% chance
+             *  - LEGENDARY:    1/4     =   25.00% chance
+             *  -------------------------------------------
+             */
+
+            // Generate random number between 1-100
+            int roll = rand.nextInt(100) + 1;
+            Item item;
+            if (roll <= 42) {           // COMMON
+                item = commonItems.get(rand.nextInt(commonItems.size()));
+            } else if (roll <= 75) {    // RARE
+                item = rareItems.get(rand.nextInt(rareItems.size()));
+            } else {                    // LEGENDARY
+                item = legendaryItems.get(rand.nextInt(legendaryItems.size()));
+            }
+
+            // Do not include duplicates in shop
+            if (!options.contains(item)) {
+                options.add(item);
+            }
+        }
         return options;
     }
 
@@ -125,12 +189,7 @@ public class ItemPanel extends JPanel
     /// ///////////////////////////////////////////
 
     private JPanel createItemIcon(Item item, GameController gc) {
-        /*
-            TO-DO:
-                - Include item sprites?
-                - Make item descriptions look cleaner and more readable.
-         */
-        // Create itemPanel
+        // Create ItemPanel
         JPanel itemPanel = new JPanel();
         itemPanel.setPreferredSize(new Dimension(425, 350));
         itemPanel.setBackground(Color.BLACK);
@@ -144,8 +203,6 @@ public class ItemPanel extends JPanel
 
         // Process item selection (prompt user for confirmation)
         selectButton.addActionListener(e -> confirmSelection(item, gc));
-
-        // Add selectButton to itemPanel
         itemPanel.add(selectButton, BorderLayout.NORTH);
 
         // Item Description formatting
@@ -162,13 +219,19 @@ public class ItemPanel extends JPanel
     }
 
     /// ///////////////////////////////////////////
-    ///                ITEM CONFIRMATION
+    ///             ITEM CONFIRMATION
     /// ///////////////////////////////////////////
 
     private void confirmSelection(Item item, GameController gc) {
+        // Only allow one purchase per turn
+        if (itemPurchased) {
+            updateMessage("You can only purchase one item per turn.", Color.RED);
+            return;
+        }
+
         // Prompt user to confirm their selection
         JDialog confirmationDialog = new JDialog(SwingUtilities.getWindowAncestor(this));
-        confirmationDialog.setUndecorated(true); // this keeps the tab black and follows the theme
+        confirmationDialog.setUndecorated(true);
         confirmationDialog.setSize(400, 200);
         confirmationDialog.setLayout(new BorderLayout());
         confirmationDialog.getContentPane().setBackground(Color.BLACK);
@@ -194,7 +257,10 @@ public class ItemPanel extends JPanel
             String message = gc.rewardSelection(item);
             this.messageLabel.setText(message);
             if (message.contains("Not enough coins")) {
-                this.messageLabel.setForeground(Color.RED);
+                updateMessage(message, Color.RED);
+            } else {
+                updateMessage(message, Color.YELLOW);
+                itemPurchased = true;
             }
             confirmationDialog.dispose();
         });
@@ -204,19 +270,22 @@ public class ItemPanel extends JPanel
         noButton.setBackground(Color.BLACK);
         noButton.setForeground(Color.RED);
         noButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        noButton.addActionListener(e -> {
-            this.messageLabel.setForeground(Color.YELLOW);
-            confirmationDialog.dispose();
-        });
+        noButton.addActionListener(e -> confirmationDialog.dispose());
 
         // Add yes/no buttons to buttonPanel
         buttonPanel.add(yesButton);
         buttonPanel.add(noButton);
-
-        // Add buttonPanel to confirmation window
         confirmationDialog.add(buttonPanel, BorderLayout.SOUTH);
         confirmationDialog.setLocationRelativeTo(this);
         confirmationDialog.setVisible(true);
     }
 
+    public void updateMessage(String message, Color color) {
+        this.messageLabel.setText(message);
+        this.messageLabel.setForeground(color);
+    }
+
+    public void needSoyMilk() {
+        this.needSoyMilk = true;
+    }
 }

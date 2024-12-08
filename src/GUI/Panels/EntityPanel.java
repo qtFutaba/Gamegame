@@ -25,8 +25,7 @@ public class EntityPanel extends JPanel
     }
 
     @Override
-    protected void paintComponent(Graphics g)
-    {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         g2d = (Graphics2D) g;
@@ -41,9 +40,8 @@ public class EntityPanel extends JPanel
         String name = entity.getName();
         int nameWidth = fm.stringWidth(name);
 
-
         // NAME POSITION
-        int center = 175;
+        int center = 175; // Example center position
         int nameX = center - nameWidth / 2;
         int nameY = 20;
 
@@ -52,34 +50,43 @@ public class EntityPanel extends JPanel
         g2d.setColor(Color.WHITE);
         g2d.drawString(name, nameX, nameY);
 
-        int healthBarWidth = 250;
-        int healthBarHeight = 30;
-        int healthBarX = nameX + nameWidth / 2 - healthBarWidth / 2; //CENTER
+        //---------------------------------------------------------------------------
+        // HEALTH BAR
+        //---------------------------------------------------------------------------
+        int healthBarWidth = 250; // Total width of the health bar
+        int healthBarHeight = 30; // Height of the health bar
+        int healthBarX = center - healthBarWidth / 2; // Center the health bar
         int healthBarY = nameY + 20;
 
         // BORDER
+        g2d.setColor(Color.WHITE);
         g2d.drawRect(healthBarX - 1, healthBarY - 1, healthBarWidth + 2, healthBarHeight + 2);
 
-        // FILL
-        g2d.setColor(Color.RED);
-        g2d.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+        // CALCULATE HEALTH BAR FILL
+        int currentHP = entity.getCurrentHealth(); // Get current health
+        int maxHP = entity.getMaxHealth();  // Get max health
+        int filledWidth = (int) ((double) currentHP / maxHP * healthBarWidth); // Scale width
+
+        // FILL BASED ON HP
+        g2d.setColor(Color.RED); // Health bar color
+        g2d.fillRect(healthBarX, healthBarY, filledWidth, healthBarHeight);
 
         // TEXT
-        int currentHP = gc.getEnemy(0).getCurrentHealth();
-        int MaxHP = gc.getEnemy(0).getMaxHealth();
+        String healthText = "HP: " + currentHP + "/" + maxHP;
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        g2d.drawString("HP: " + currentHP + "/" + MaxHP, healthBarX + healthBarWidth / 2 - g2d.getFontMetrics().stringWidth("HP: 100/100") / 2, healthBarY + 20);
+        g2d.drawString(healthText, healthBarX + healthBarWidth / 2 - g2d.getFontMetrics().stringWidth(healthText) / 2, healthBarY + 20);
 
+        //---------------------------------------------------------------------------
         // SPRITE
-        if (sprite != null)
-        {
+        //---------------------------------------------------------------------------
+        if (sprite != null) {
             int spriteWidth = 150;
             int spriteHeight = 150;
 
             // CENTER SPRITE UNDER HEALTH BAR
-            int playerSpriteX = healthBarX + (healthBarWidth / 2) - (spriteWidth / 2); // CENTER
-            int playerSpriteY = healthBarY + 40; // GAP FOR SPACING
+            int playerSpriteX = healthBarX + (healthBarWidth / 2) - (spriteWidth / 2); // Center
+            int playerSpriteY = healthBarY + 40; // Gap for spacing
 
             g2d.drawImage(sprite, playerSpriteX, playerSpriteY, spriteWidth, spriteHeight, this);
         }

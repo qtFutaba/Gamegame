@@ -43,7 +43,7 @@ public class BattlePanel extends JPanel
         playerPanel.setMinimumSize(sceneSize);
         playerPanel.setMaximumSize(sceneSize);
 
-        enemyPanel = new EntityPanel(gc.getEnemy(gc.getBattleCounter()),gc);
+        enemyPanel = new EntityPanel(gc.getBattle(gc.getBattleCounter()).getEnemy(),gc);
         enemyPanel.setPreferredSize(sceneSize);
         enemyPanel.setMinimumSize(sceneSize);
         enemyPanel.setMaximumSize(sceneSize);

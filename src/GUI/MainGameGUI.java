@@ -30,7 +30,6 @@ public class MainGameGUI extends JFrame
         JPanel container = new JPanel(cardLayout);
         container.setBackground(Color.BLACK);
 
-
         //Next, create the Controllers
         GameController gc = new GameController(container);
 
@@ -73,8 +72,6 @@ public class MainGameGUI extends JFrame
         // Show the JFrame.
         this.setSize(1440, 900);
         this.setVisible(true);
-
-
     }
 
     // Main function that creates the client GUI when the program is started.

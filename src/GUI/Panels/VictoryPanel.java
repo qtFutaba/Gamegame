@@ -7,42 +7,48 @@ import javax.swing.border.Border;
 
 public class VictoryPanel extends JPanel
 {
+    JLabel label = new JLabel();
+    JButton continueButton = new JButton();
+    JButton mainmenuButton = new JButton();
+    JButton exitButton = new JButton();
+
     // Constructor for the main menu.
     public VictoryPanel(GameController gc)
     {
-// Create the title.
-        JLabel label = new JLabel("YOU HAVE SURVIVED THE DUNGEONS OF CAZA.", JLabel.CENTER);
+    // Create the title.
+        label = new JLabel("YOU HAVE SURVIVED THE DUNGEONS OF CAZA. OR HAVE YOU?", JLabel.CENTER);
         label.setFont(new Font("Viner Hand ITC", Font.BOLD, 26));
         label.setForeground(Color.WHITE);
 
-        // Create the new game button.
-        JButton newGameButton = new JButton("New Game");
-        newGameButton.addActionListener(gc);
+        // Create the continue button.
+        continueButton = new JButton("Continue...");
+        continueButton.addActionListener(gc);
 
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
         Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10); // 10 pixels padding
-        newGameButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
-        newGameButton.setBackground(Color.BLACK);
-        newGameButton.setForeground(Color.WHITE);
-        newGameButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-
-        JPanel newGameButtonBuffer = new JPanel();
-        newGameButtonBuffer.add(newGameButton);
-
-        // Create the leaderboard button.
-        JButton leaderboardButton = new JButton("Leaderboard");
-        leaderboardButton.addActionListener(gc);
-        leaderboardButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
-        leaderboardButton.setBackground(Color.BLACK);
-        leaderboardButton.setForeground(Color.WHITE);
-        leaderboardButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        continueButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        continueButton.setBackground(Color.BLACK);
+        continueButton.setForeground(Color.WHITE);
+        continueButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 
 
-        JPanel leaderboardButtonBuffer = new JPanel();
-        leaderboardButtonBuffer.add(leaderboardButton);
+        JPanel continueButtonBuffer = new JPanel();
+        continueButtonBuffer.add(continueButton);
+
+        // Create the main menu button.
+        mainmenuButton = new JButton("Main Menu");
+        mainmenuButton.addActionListener(gc);
+        mainmenuButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        mainmenuButton.setBackground(Color.BLACK);
+        mainmenuButton.setForeground(Color.WHITE);
+        mainmenuButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+
+
+        JPanel mainmenuButtonBuffer = new JPanel();
+        mainmenuButtonBuffer.add(mainmenuButton);
 
         // Create the exit button.
-        JButton exitButton = new JButton("Exit Game");
+        exitButton = new JButton("Exit Game");
         exitButton.addActionListener(gc);
         exitButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         exitButton.setBackground(Color.BLACK);
@@ -55,16 +61,32 @@ public class VictoryPanel extends JPanel
         // Arrange the components in a grid.
         JPanel grid = new JPanel(new GridLayout(4, 1, 5, 5));
         grid.add(label);
-        grid.add(newGameButtonBuffer);
-        grid.add(leaderboardButtonBuffer);
+        grid.add(continueButtonBuffer);
+        grid.add(mainmenuButtonBuffer);
         grid.add(exitButtonBuffer);
 
         // Color
         grid.setBackground(Color.BLACK);
-        newGameButtonBuffer.setBackground(Color.BLACK);
-        leaderboardButtonBuffer.setBackground(Color.BLACK);
+        continueButtonBuffer.setBackground(Color.BLACK);
+        mainmenuButtonBuffer.setBackground(Color.BLACK);
         exitButtonBuffer.setBackground(Color.BLACK);
 
         this.add(grid);
     }
+
+    public void trueVictory(boolean achieved)
+    {
+        if(achieved)
+        {
+            label.setText("YOU HAVE TRULY CONQUERED THE DUNGEONS OF CAZA.");
+            continueButton.setVisible(false);
+        }
+        else
+        {
+            label.setText("YOU HAVE SURVIVED THE DUNGEONS OF CAZA. OR HAVE YOU?");
+            continueButton.setVisible(true);
+        }
+    }
+
+
 }

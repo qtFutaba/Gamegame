@@ -25,8 +25,8 @@ public class Dragon extends Enemy {
 
     public Dragon() {
         this.setName("Dragon");
-        this.setMaxHealth(400);
-        this.setCurrentHealth(400);
+        this.setMaxHealth(165);
+        this.setCurrentHealth(165);
         this.setCoinReward(80);
         this.setSprite("src/Sprites/dragon.png");
         this.setStat("high");
@@ -34,7 +34,8 @@ public class Dragon extends Enemy {
         this.setStat("high");
         this.setDefense(this.getStat());
         this.setStat("high");
-        this.setMagicPoints(this.getStat());
+        this.setMagic(this.getStat());
+        this.setTurnWasteChance(20);
     }
 
     public String getGreeting() {

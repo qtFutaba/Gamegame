@@ -12,6 +12,10 @@ public class Item {
     public int attackBoost;
     public int defenseBoost;
     public int magicBoost;
+    public int healthBuff;
+    public boolean isBuff;
+    public boolean isAction;
+    public boolean isMisc;
 
     public Item() {
         this.itemName = "Default item";
@@ -21,6 +25,10 @@ public class Item {
         this.attackBoost = 0;
         this.defenseBoost = 0;
         this.magicBoost = 0;
+        this.healthBuff = 0;
+        this.isBuff = false;
+        this.isAction = false;
+        this.isMisc = false;
     }
 
     @Override
@@ -48,10 +56,15 @@ public class Item {
             // Set item rarity
             this.rarity = 3;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "A ring made from the bone of an ancient warrior... or so they claim. " +
-                "It could be from a really big animal. Either way, it's got a mysterious aura. Wear at " +
-                "your own risk.";
+                    "It could be from a really big animal. Either way, it's got a mysterious aura. Wear at " +
+                    "your own risk.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
@@ -78,11 +91,16 @@ public class Item {
             // Set item rarity
             this.rarity = 2;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "A jar of slightly moldy mushrooms. They might look questionable, but eat them, " +
-                "and you'll feel an attack boost so strong, it'll make you forget they were ever moldy... " +
-                "or that you even ate them. Afterward, your enemies might look a little more terrifying... " +
-                "which, of course, gives you all the more reason to hit harder.";
+                    "and you'll feel an attack boost so strong, it'll make you forget they were ever moldy... " +
+                    "or that you even ate them. Afterward, your enemies might look a little more terrifying... " +
+                    "which, of course, gives you all the more reason to hit harder.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
@@ -109,10 +127,15 @@ public class Item {
             // Set item rarity
             this.rarity = 1;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "A pepper so hot that it could melt steel. Eat one, and your anger will " +
-                "flourish, making every hit feel like a thunderclap. Just be prepared to regret your decision " +
-                "later...";
+                    "flourish, making every hit feel like a thunderclap. Just be prepared to regret your decision " +
+                    "later...";
 
             // Item stat boost information
             String boostDescription = generateDescription();
@@ -143,11 +166,16 @@ public class Item {
             // Set item rarity
             this.rarity = 3;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "A shard from the ship of doom, Naglfar, said to be crafted from the " +
-                "nails of dead men. This dark relic emits a faint, unsettling aura, as if it carries the " +
-                "weight of countless souls. This fragment offers powerful protection, drawing strength " +
-                "from its dark and ancient origins.";
+                    "nails of dead men. This dark relic emits a faint, unsettling aura, as if it carries the " +
+                    "weight of countless souls. This fragment offers powerful protection, drawing strength " +
+                    "from its dark and ancient origins.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
@@ -174,9 +202,14 @@ public class Item {
             // Set item rarity
             this.rarity = 1;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "... It's just a sock.\nIts pungent odor may not be pleasant, but it has a " +
-                "way of keeping enemies at bay. Some say the smell is worse than the most powerful of curses.";
+                    "way of keeping enemies at bay. Some say the smell is worse than the most powerful of curses.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
@@ -202,6 +235,11 @@ public class Item {
 
             // Set item rarity
             this.rarity = 2;
+
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
 
             // Item description line
             String customDescription = "An eye-shaped amulet that protects against the evil eye.";
@@ -235,6 +273,11 @@ public class Item {
             // Set item rarity
             this.rarity = 3;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "A crown once worn by an ancient king whose pyromaniac tendencies damned " +
                     "his kingdom. The remnants of his fiery reign still linger in the crown's blackened metal, " +
@@ -266,9 +309,14 @@ public class Item {
             // Set item rarity
             this.rarity = 2;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "An old, velvety green cloak with a hood. You take a closer look and " +
-                "notice the name \"Brian\" embroidered inside. It looks like it was once part of an elaborate cosplay.";
+                    "notice the name \"Brian\" embroidered inside. It looks like it was once part of an elaborate cosplay.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
@@ -295,6 +343,11 @@ public class Item {
             // Set item rarity
             this.rarity = 1;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "A crunchy snack that promises a fortune.";
 
@@ -319,25 +372,25 @@ public class Item {
             this.itemName = "Soy Milk";
 
             // Set item price
-            this.itemPrice = 5;
+            this.itemPrice = 10;
 
             // Set item rarity
             this.rarity = 1;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
-            String customDescription = "You scratch your head in confusion. Why is this here? " +
-                "Who knows, adventurer? ...it may come in handy.";
+            String customDescription = "It smells... overpriced.\nYou scratch your head in confusion. Why is this here? " +
+                    "Who knows, adventurer? ...it may come in handy.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
 
             // Concatenate item description and stat boost information
             this.itemDescription = boostDescription + customDescription;
-
-            /* NOTE:
-                    THIS ITEM WILL AUTOMATICALLY REDUCE HALF OF THE SECRET BOSS'S HEALTH.
-                    THIS LOGIC STILL NEEDS TO BE IMPLEMENTED.
-             */
         }
     }
 
@@ -355,20 +408,20 @@ public class Item {
             // Set item rarity
             this.rarity = 2;
 
+            // Set item type
+            this.isBuff = true;
+            this.isAction = false;
+            this.isMisc = false;
+
             // Item description line
             String customDescription = "It's glowing, and it smells like cigarettes and cheap perfume— like something" +
-                "you'd find at a shady motel.";
+                    "you'd find at a shady motel.";
 
             // Item stat boost information
             String boostDescription = generateDescription();
 
             // Concatenate item description and stat boost information
             this.itemDescription = boostDescription + customDescription;
-
-            /* NOTE:
-                THIS ITEM WILL REVIVE THE PLAYER ONE TIME SHOULD THEY DIE.
-                THIS LOGIC STILL NEEDS TO BE IMPLEMENTED.
-             */
         }
     }
 
@@ -415,6 +468,7 @@ public class Item {
     }
 
     public static List<Item> getItems() {
+        // Note: SoyMilk is purposely omitted to ensure it only appears before the final boss fight.
         List<Item> items = new ArrayList<>();
         items.add(new RingOfBone());
         items.add(new JarOfMushrooms());
@@ -425,7 +479,6 @@ public class Item {
         items.add(new CrownOfTheFallenKing());
         items.add(new CloakofSwiftCasting());
         items.add(new FortuneCookie());
-        items.add(new SoyMilk());
         items.add(new MysteriousLiquid());
         return items;
     }

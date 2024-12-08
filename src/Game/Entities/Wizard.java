@@ -25,8 +25,8 @@ public class Wizard extends Enemy {
 
     public Wizard() {
         this.setName("Wizard");
-        this.setMaxHealth(150);
-        this.setCurrentHealth(150);
+        this.setMaxHealth(70);
+        this.setCurrentHealth(70);
         this.setCoinReward(30);
         this.setSprite("src/Sprites/wizard.png");
         this.setStat("low");
@@ -34,7 +34,8 @@ public class Wizard extends Enemy {
         this.setStat("low");
         this.setDefense(this.getStat());
         this.setStat("high");
-        this.setMagicPoints(this.getStat());
+        this.setMagic(this.getStat());
+        this.setTurnWasteChance(40);
     }
 
     public String getGreeting() {

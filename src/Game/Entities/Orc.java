@@ -25,8 +25,8 @@ public class Orc extends Enemy {
 
     public Orc() {
         this.setName("Orc");
-        this.setMaxHealth(225);
-        this.setCurrentHealth(225);
+        this.setMaxHealth(105);
+        this.setCurrentHealth(105);
         this.setCoinReward(40);
         this.setSprite("src/Sprites/orc.png");
         this.setStat("standard");
@@ -34,7 +34,8 @@ public class Orc extends Enemy {
         this.setStat("standard");
         this.setDefense(this.getStat());
         this.setStat("standard");
-        this.setMagicPoints(this.getStat());
+        this.setMagic(this.getStat());
+        this.setTurnWasteChance(30);
     }
 
     public String getGreeting() {

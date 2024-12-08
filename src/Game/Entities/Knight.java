@@ -26,8 +26,8 @@ public class Knight extends Enemy {
 
     public Knight() {
         this.setName("Knight");
-        this.setMaxHealth(200);
-        this.setCurrentHealth(200);
+        this.setMaxHealth(140);
+        this.setCurrentHealth(140);
         this.setCoinReward(40);
         this.setSprite("src/Sprites/knight.png");
         this.setStat("standard");
@@ -35,7 +35,8 @@ public class Knight extends Enemy {
         this.setStat("high");
         this.setDefense(this.getStat());
         this.setStat("low");
-        this.setMagicPoints(this.getStat());
+        this.setMagic(this.getStat());
+        this.setTurnWasteChance(25);
     }
 
     public String getGreeting() {
