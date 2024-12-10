@@ -25,6 +25,7 @@ public class Dragon extends Enemy {
 
     public Dragon() {
         this.setName("Dragon");
+        this.setLevel(31);
         this.setMaxHealth(165);
         this.setCurrentHealth(165);
         this.setCoinReward(80);

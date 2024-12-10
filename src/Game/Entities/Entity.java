@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Entity {
+    private int level;
     private int attack;
     private int defense;
     private int magic;
@@ -26,6 +27,7 @@ public class Entity {
 
 
     public Entity(){
+        level = 30;
         attack = 5;
         defense = 5;
         magic = 5;
@@ -115,5 +117,13 @@ public class Entity {
     public Attack getAttackMove(int i)
     {
         return attacks.get(i);
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

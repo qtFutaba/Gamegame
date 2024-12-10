@@ -25,6 +25,7 @@ public class Orc extends Enemy {
 
     public Orc() {
         this.setName("Orc");
+        this.setLevel(29);
         this.setMaxHealth(105);
         this.setCurrentHealth(105);
         this.setCoinReward(40);

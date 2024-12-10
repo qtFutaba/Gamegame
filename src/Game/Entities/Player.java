@@ -12,6 +12,7 @@ public class Player extends Entity {
 
     public Player()
     {
+        this.setLevel(30);
         setMaxHealth(75);
         setCurrentHealth(75);
         setName("Player");

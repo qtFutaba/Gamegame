@@ -49,6 +49,18 @@ public class MainMenuPanel extends JPanel
         JPanel leaderboardButtonBuffer = new JPanel();
         leaderboardButtonBuffer.add(leaderboardButton);
 
+        // Create the Settings button
+        JButton settingsButton = new JButton("Settings");
+        settingsButton.addActionListener(gc);
+        settingsButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        settingsButton.setBackground(Color.BLACK);
+        settingsButton.setForeground(Color.WHITE);
+        settingsButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        settingsButton.setFocusPainted(false);
+
+        JPanel settingsButtonBuffer = new JPanel();
+        settingsButtonBuffer.add(settingsButton);
+
 
         // Create the Credits button
         JButton creditsButton = new JButton("Credits");
@@ -75,10 +87,11 @@ public class MainMenuPanel extends JPanel
         exitButtonBuffer.add(exitButton);
 
         // Arrange the components in a grid.
-        JPanel grid = new JPanel(new GridLayout(5, 1, 4, 0));
+        JPanel grid = new JPanel(new GridLayout(6, 1, 4, 0));
         grid.add(label);
         grid.add(newGameButtonBuffer);
         grid.add(leaderboardButtonBuffer);
+        grid.add(settingsButtonBuffer);
         grid.add(creditsButtonBuffer);
         grid.add(exitButtonBuffer);
 
@@ -87,6 +100,7 @@ public class MainMenuPanel extends JPanel
         newGameButtonBuffer.setBackground(Color.BLACK);
         leaderboardButtonBuffer.setBackground(Color.BLACK);
         exitButtonBuffer.setBackground(Color.BLACK);
+        settingsButtonBuffer.setBackground(Color.BLACK);
         creditsButtonBuffer.setBackground(Color.BLACK);
 
         this.add(grid);

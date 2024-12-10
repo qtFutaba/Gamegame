@@ -188,6 +188,14 @@ public class CharacterCreationPanel extends JPanel
         beginJourneyButton.setForeground(Color.YELLOW);
         beginJourneyButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 
+        // Wait, go back! button.
+        JButton returnButton = new JButton("Wait, I change my mind...");
+        returnButton.addActionListener(gc);
+        returnButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        returnButton.setBackground(Color.BLACK);
+        returnButton.setForeground(Color.RED);
+        returnButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 10));
+
 
 
         //----------------------------------------------------------------------------------------------------------------
@@ -199,12 +207,14 @@ public class CharacterCreationPanel extends JPanel
         mainGrid.add(choices);
         mainGrid.add(nameEntryBuffer);
         mainGrid.add(beginJourneyButton);
+        mainGrid.add(returnButton);
 
         //Align everything in main grid.
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         choices.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameEntryBuffer.setAlignmentX(Component.CENTER_ALIGNMENT);
         beginJourneyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        returnButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Color.
         mainGrid.setBackground(Color.BLACK);

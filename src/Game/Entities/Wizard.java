@@ -25,6 +25,7 @@ public class Wizard extends Enemy {
 
     public Wizard() {
         this.setName("Wizard");
+        this.setLevel(27);
         this.setMaxHealth(70);
         this.setCurrentHealth(70);
         this.setCoinReward(30);

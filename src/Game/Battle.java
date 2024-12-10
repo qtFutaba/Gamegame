@@ -1,18 +1,28 @@
 package Game;
 
 import Game.Entities.*;
+import Game.Music.MusicPlayer;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class Battle
 {
     private Player player;
     private Enemy enemy;
+    private MusicPlayer soundPlayer;
+    private JTextField battleLog;
 
     public Battle(Player player, Enemy enemy)
     {
         this.player = player;
         this.enemy = enemy;
+        this.soundPlayer = new MusicPlayer();
+    }
+
+    public void setSoundPlayer(MusicPlayer soundPlayer)
+    {
+        this.soundPlayer = soundPlayer;
     }
 
     public static boolean isCriticalHit()
@@ -73,7 +83,7 @@ public class Battle
             }
 
             // Damage formula
-            damage = (int) (((((2 * critMultiplier + 2) * attack.getPower() * attackerAttack / defenderDefense) / 50) + 2) * randomFactor);
+            damage = (int) ((((((2 * attacker.getLevel() * critMultiplier + 2) + 2) * attack.getPower() * (attackerAttack / defenderDefense)) / 50) + 2) * randomFactor);
             
         }
         else
@@ -188,5 +198,10 @@ public class Battle
     public void setPlayer(Player player)
     {
         this.player = player;
+    }
+
+    public void setBattleLog(JTextField battleLog)
+    {
+        this.battleLog = battleLog;
     }
 }

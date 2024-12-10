@@ -31,7 +31,7 @@ public class CreditsPanel extends JPanel {
         for (JLabel nameLabel : labels) {
             nameLabel.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
             nameLabel.setBackground(Color.BLACK);
-            nameLabel.setForeground(Color.WHITE);
+            nameLabel.setForeground(Color.YELLOW);
             nameLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
         }
 
@@ -48,6 +48,7 @@ public class CreditsPanel extends JPanel {
         // Create the return to main menu button.
         JButton mainmenuButton = new JButton("Return to Main Menu.");
         mainmenuButton.addActionListener(gc);
+        mainmenuButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         mainmenuButton.setBackground(Color.BLACK);
         mainmenuButton.setForeground(Color.WHITE);
         mainmenuButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));

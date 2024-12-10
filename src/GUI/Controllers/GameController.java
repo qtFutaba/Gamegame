@@ -28,6 +28,7 @@ public class GameController implements ActionListener
     private MusicPlayer musicPlayer;
     private MusicPlayer soundPlayer;
     private String playerName;
+    private boolean devMode;
 
     // Constructor for the initial controller.
     public GameController(JPanel container)
@@ -46,8 +47,9 @@ public class GameController implements ActionListener
         this.container = container;
         this.player = new Player();
         this.battles = new ArrayList<>();
-        battleCounter = 0;
+        this.battleCounter = 0;
         this.classChoice = "";
+        this.devMode = false;
 
         battles.add(new Battle(this.player, new Goblin()));
         battles.add(new Battle(this.player, new Wizard()));
@@ -55,6 +57,8 @@ public class GameController implements ActionListener
         battles.add(new Battle(this.player, new Knight()));
         battles.add(new Battle(this.player, new Dragon()));
         battles.add(new Battle(this.player, new SecretBoss()));
+
+
     }
 
     // Handle button clicks.
@@ -65,14 +69,35 @@ public class GameController implements ActionListener
         // Play a sound effect.
         soundPlayer.play("src/Game/Music/button.wav");
 
+        // For certain buttons, create two borders for unselected or selected choices.
+        Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+        Border selectedBorder = BorderFactory.createLineBorder(Color.YELLOW, 1);
+        Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+
+        //-----------------------------------------------------------------------
+        //SETTINGS
+        //-----------------------------------------------------------------------
+        CharacterCreationPanel charPanel = (CharacterCreationPanel) container.getComponent(2);
+        SettingsPanel settingsPanel = (SettingsPanel) container.getComponent(8);
+
+        // Dev mode on.
+        if (command.equals("On")) {
+            devMode = true;
+            settingsPanel.devModeOnButton.setBorder(BorderFactory.createCompoundBorder(selectedBorder, paddingBorder));
+            settingsPanel.devModeOffButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        }
+
+        // Dev mode off.
+        else if (command.equals("Off")) {
+            devMode = false;
+            settingsPanel.devModeOnButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+            settingsPanel.devModeOffButton.setBorder(BorderFactory.createCompoundBorder(selectedBorder, paddingBorder));
+        }
+
         //-----------------------------------------------------------------------
         //CHARACTER CREATION
         //-----------------------------------------------------------------------
         CharacterCreationPanel panel = (CharacterCreationPanel) container.getComponent(2);
-
-        Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-        Border selectedBorder = BorderFactory.createLineBorder(Color.YELLOW, 1);
-        Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 
         // Select Warrior.
         if (command.equals("Warrior")) {
@@ -144,7 +169,7 @@ public class GameController implements ActionListener
             cardLayout.show(container, "charactercreation");
         }
 
-        // Opens a high score panel.
+        // Opens a high score charPanel.
         else if (command.equals("Leaderboard")) {
             //LeaderboardPanel scoresPanel = (LeaderboardPanel) container.getComponent(1);
             CardLayout cardLayout = (CardLayout) container.getLayout();
@@ -156,6 +181,13 @@ public class GameController implements ActionListener
             System.exit(0);
         }
 
+        // Show settings.
+        else if (command.equals("Settings")) {
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "settings");
+        }
+
+        // Show credits.
         else if (command.equals("Credits")) {
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "credits");
@@ -174,16 +206,21 @@ public class GameController implements ActionListener
         //-----------------------------------------------------------------------
         //BATTLE
         //-----------------------------------------------------------------------
-        // Opens a panel containing player attacking moves.
+        // Opens a charPanel containing player attacking moves.
         else if (command.equals("Fight"))
         {
             showAttacks(container);
         }
 
-        // Open a panel consisting of "Block" and "Heal" (Limited uses)
+        // Open a charPanel consisting of "Block" and "Heal" (Limited uses)
         else if (command.equals("Utility"))
         {
             showActions(container);
+        }
+
+        else if (command.equals("Stats"))
+        {
+            showStats(container);
         }
 
         // Surrender the fight to enter game over state without losing gold.
@@ -192,11 +229,21 @@ public class GameController implements ActionListener
             surrender(container);
         }
 
+
+
         //-----------------------------------------------------------------------
         //SELECT REWARD
         //-----------------------------------------------------------------------
         else if (command.equals("Next Battle"))
         {
+            // Stop the current music.
+            musicPlayer.stop();
+
+            // Play new music.
+            String musicPath = "src/Game/Music/battle1.wav";
+            musicPlayer.play(musicPath);
+            musicPlayer.loop();
+
             BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
 
             battlePanel.getEnemyPanel().updateEntity(battles.get(battleCounter).getEnemy());
@@ -227,7 +274,7 @@ public class GameController implements ActionListener
             cardLayout.show(container, "battle");
         }
 
-        else if (command.equals("Main Menu"))
+        else if (command.equals("Main Menu") || command.equals("Wait, I change my mind..."))
         {
             Component source = (Component) ae.getSource();
             if (SwingUtilities.getAncestorOfClass(GameOverPanel.class, source) != null)
@@ -251,13 +298,21 @@ public class GameController implements ActionListener
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "battle");
         }
-
-
     }
 
     //-----------------------------------------------------------------------
     // UTILITY FUNCTIONS
     //-----------------------------------------------------------------------
+
+    public void setBattleLogs()
+    {
+        BattlePanel battlePanel = (BattlePanel) container.getComponent(2);
+
+        for (Battle battle : battles)
+        {
+            battle.setBattleLog(battlePanel.getBattleLog());
+        }
+    };
 
     public void createCharacter()
     {
@@ -311,7 +366,6 @@ public class GameController implements ActionListener
                 player.addAttack(new Attack("Heavy Swing", "Physical", 80, 100, 100));
                 player.addAttack(new Attack("Holy Smite", "Magic", 120, 15, 15));
                 player.addAttack(new Attack("Divine Judgement", "Magic", 180, 3, 3));
-                player.addAttack(new Attack("UNHOLY DESTRUCTION", "Magic", 10080, 404, 404));
 
                 break;
             default:
@@ -324,6 +378,10 @@ public class GameController implements ActionListener
                 player.setStat(player.LOW);
                 player.setMagic(player.getStat());
                 break;
+        }
+        if (devMode)
+        {
+            player.addAttack(new Attack("UNHOLY DESTRUCTION", "Magic", 10080, 404, 404));
         }
     }
 
@@ -345,32 +403,6 @@ public class GameController implements ActionListener
         victoryPanel.trueVictory(false);
     }
 
-    private void debugBattle()
-    {
-        /******************************
-        //Logic to hit enemies and swap to next enemy.
-        Enemy currentEnemy = battles.get(battleCounter).getEnemy();
-        currentEnemy.setCurrentHealth(currentEnemy.getCurrentHealth() - 50);
-
-        System.out.println(currentEnemy.getCurrentHealth());
-        if (currentEnemy.getCurrentHealth() <= 0) {
-            if (enemies.size() > 1) {
-                enemies.remove(0);
-                System.out.println("New Enemy appears");
-                updateBattle();
-            } else if (enemies.size() == 1) {
-                System.out.println("You won!");
-            }
-        }
-        //*****************************
-        //Logic to take dmg from enemies
-        player.setCurrentHealth(player.getCurrentHealth() - 1);
-        System.out.print("Player health is now: ");
-        System.out.println(player.getCurrentHealth());
-
-        ****************************/
-    }
-
     // Update battle panel after victory
     private void updateBattle()
     {
@@ -389,6 +421,14 @@ public class GameController implements ActionListener
             battleCounter++;
             if (battleCounter == 5)
             {
+                // Stop the current music.
+                musicPlayer.stop();
+
+                // Play new music.
+                String musicPath = "src/Game/Music/mainmenu1.wav";
+                musicPlayer.play(musicPath);
+                musicPlayer.loop();
+
                 VictoryPanel victoryPanel = (VictoryPanel) container.getComponent(6);
                 victoryPanel.trueVictory(false);
 
@@ -397,6 +437,15 @@ public class GameController implements ActionListener
             }
             else if (battleCounter > 5)
             {
+                // Stop the current music.
+                musicPlayer.stop();
+
+                // Play new music.
+                String musicPath = "src/Game/Music/mainmenu1.wav";
+                musicPlayer.play(musicPath);
+                musicPlayer.loop();
+
+
                 VictoryPanel victoryPanel = (VictoryPanel) container.getComponent(6);
                 victoryPanel.trueVictory(true);
 
@@ -412,7 +461,6 @@ public class GameController implements ActionListener
         {
             updateBattle();
         }
-
     }
 
     public void enemyTurn()
@@ -449,34 +497,14 @@ public class GameController implements ActionListener
     //-----------------------------------------------------------------------
     // SETTERS AND GETTERS
     //-----------------------------------------------------------------------
-
-    public void setPlayer(Player player)
-    {
-        this.player = player;
-    }
-
     public Player getPlayer()
     {
         return player;
     }
 
-    public void setBattle(Battle battle, int index)
-    {
-        battles.set(index, battle);
-    }
-
     public Battle getBattle(int index)
     {
         return battles.get(index);
-    }
-
-    public List<Battle> getBattles() {return battles;}
-
-    public void setBattles(List<Battle> battles) {this.battles = battles;}
-
-    public void setBattleCounter(int index)
-    {
-        battleCounter = index;
     }
 
     public int getBattleCounter()
@@ -721,6 +749,95 @@ public class GameController implements ActionListener
         dialog.setVisible(true);
     }
 
+    private void showStats(Component parent)
+    {
+        //Create a dialog
+        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "Message", true);
+        dialog.setUndecorated(true);
+        dialog.setLayout(new BorderLayout());
+        dialog.getContentPane().setBackground(Color.BLACK);
+
+        //Create the panel.
+        JPanel messagePanel = new JPanel();
+        messagePanel.setBackground(Color.BLACK);
+        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+
+        JLabel messageLabel = new JLabel(player.getName() + "'s Stats", JLabel.CENTER);
+        messageLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        messageLabel.setForeground(Color.WHITE);
+        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Add padding to the panel
+        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        messagePanel.add(messageLabel);
+
+        // Create a panel to show all player stats.
+        JPanel statsPanel = new JPanel();
+        statsPanel.setBackground(Color.BLACK);
+        statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
+
+        Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+        Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10); // 10 pixels padding
+
+        //Show stats and labels.
+        JLabel hpLabel = new JLabel("HP: " + player.getCurrentHealth() + "/" + player.getMaxHealth(), JLabel.CENTER);
+        hpLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        hpLabel.setForeground(Color.WHITE);
+        hpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statsPanel.add(hpLabel);
+
+        JLabel attackLabel = new JLabel("ATK: " + player.getAttack(), JLabel.CENTER);
+        attackLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        attackLabel.setForeground(Color.WHITE);
+        attackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statsPanel.add(attackLabel);
+
+        JLabel defenseLabel = new JLabel("DEF: " + player.getDefense(), JLabel.CENTER);
+        defenseLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        defenseLabel.setForeground(Color.WHITE);
+        defenseLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statsPanel.add(defenseLabel);
+
+        JLabel magicLabel = new JLabel("MAG: " + player.getMagic(), JLabel.CENTER);
+        magicLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        magicLabel.setForeground(Color.WHITE);
+        magicLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statsPanel.add(magicLabel);
+
+        JLabel coinsLabel = new JLabel("Coins: " + player.getCoinPurse(), JLabel.CENTER);
+        coinsLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        coinsLabel.setForeground(Color.WHITE);
+        coinsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statsPanel.add(coinsLabel);
+
+        // Create a button to return
+        JButton closeButton = new JButton("Close");
+        closeButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        closeButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        closeButton.setBackground(Color.BLACK);
+        closeButton.setForeground(Color.YELLOW);
+        closeButton.setFocusPainted(false);
+        closeButton.addActionListener(e -> {
+            // Play the sound effect
+            soundPlayer.play("src/Game/Music/button.wav");
+
+            // Close the dialog
+            dialog.dispose();
+        });
+
+        // Add components to the dialog
+        dialog.add(messagePanel, BorderLayout.NORTH);
+        dialog.add(statsPanel, BorderLayout.CENTER);
+        dialog.add(closeButton, BorderLayout.SOUTH);
+
+        // Pack and position the dialog
+        dialog.pack();
+        dialog.setLocationRelativeTo(parent);
+
+        // Show the dialog
+        dialog.setVisible(true);
+    }
+
     private void surrender(Component parent)
     {
         //Create a dialog
@@ -757,6 +874,14 @@ public class GameController implements ActionListener
         surrenderButton.addActionListener(e -> {
             // Play the sound effect
             soundPlayer.play("src/Game/Music/button.wav");
+
+            // Stop the current music
+            musicPlayer.stop();
+
+            // Play the new music (looping)
+            String musicPath = "src/Game/Music/mainmenu1.wav";
+            musicPlayer.play(musicPath);
+            musicPlayer.loop();
 
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "gameover");

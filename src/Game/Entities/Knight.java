@@ -26,6 +26,7 @@ public class Knight extends Enemy {
 
     public Knight() {
         this.setName("Knight");
+        this.setLevel(27);
         this.setMaxHealth(140);
         this.setCurrentHealth(140);
         this.setCoinReward(40);

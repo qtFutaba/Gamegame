@@ -18,6 +18,7 @@ public class SecretBoss extends Enemy {
     private final Random rand = new Random();
 
     public SecretBoss() {
+        this.setLevel(34);
         this.setName("Dr. Baarsch");
         this.setMaxHealth(200);
         this.setCurrentHealth(200);
