@@ -22,8 +22,6 @@ public class MainMenuPanel extends JPanel
         label.setIcon(titleLogo);
 
 
-
-
         // Create the new game button.
         JButton newGameButton = new JButton("New Game");
         newGameButton.addActionListener(gc);
@@ -48,9 +46,21 @@ public class MainMenuPanel extends JPanel
         leaderboardButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
         leaderboardButton.setFocusPainted(false);
 
-
         JPanel leaderboardButtonBuffer = new JPanel();
         leaderboardButtonBuffer.add(leaderboardButton);
+
+
+        // Create the Credits button
+        JButton creditsButton = new JButton("Credits");
+        creditsButton.addActionListener(gc);
+        creditsButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        creditsButton.setBackground(Color.BLACK);
+        creditsButton.setForeground(Color.WHITE);
+        creditsButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        creditsButton.setFocusPainted(false);
+
+        JPanel creditsButtonBuffer = new JPanel();
+        creditsButtonBuffer.add(creditsButton);
 
         // Create the exit button.
         JButton exitButton = new JButton("Exit Game");
@@ -65,10 +75,11 @@ public class MainMenuPanel extends JPanel
         exitButtonBuffer.add(exitButton);
 
         // Arrange the components in a grid.
-        JPanel grid = new JPanel(new GridLayout(4, 1, 5, 0));
+        JPanel grid = new JPanel(new GridLayout(5, 1, 4, 0));
         grid.add(label);
         grid.add(newGameButtonBuffer);
         grid.add(leaderboardButtonBuffer);
+        grid.add(creditsButtonBuffer);
         grid.add(exitButtonBuffer);
 
         // Color
@@ -76,6 +87,7 @@ public class MainMenuPanel extends JPanel
         newGameButtonBuffer.setBackground(Color.BLACK);
         leaderboardButtonBuffer.setBackground(Color.BLACK);
         exitButtonBuffer.setBackground(Color.BLACK);
+        creditsButtonBuffer.setBackground(Color.BLACK);
 
         this.add(grid);
     }

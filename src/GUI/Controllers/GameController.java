@@ -156,6 +156,11 @@ public class GameController implements ActionListener
             System.exit(0);
         }
 
+        else if (command.equals("Credits")) {
+            CardLayout cardLayout = (CardLayout) container.getLayout();
+            cardLayout.show(container, "credits");
+        }
+
         //-----------------------------------------------------------------------
         //LEADERBOARD
         //-----------------------------------------------------------------------
@@ -246,6 +251,8 @@ public class GameController implements ActionListener
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "battle");
         }
+
+
     }
 
     //-----------------------------------------------------------------------
