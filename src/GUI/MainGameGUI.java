@@ -12,14 +12,6 @@ public class MainGameGUI extends JFrame
     // Constructor that creates the client GUI.
     public MainGameGUI()
     {
-        // Initialize MusicPlayer
-        MusicPlayer musicPlayer = new MusicPlayer();
-
-        // Play background music (looping)
-        String musicPath = "src/Game/Music/track1.wav"; // Replace with your file path
-        musicPlayer.play(musicPath);
-        musicPlayer.loop();
-        
         // Set the title and default close operation.
         this.setTitle("Dungeons of Caza");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
