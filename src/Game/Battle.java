@@ -135,6 +135,10 @@ public class Battle
 
         // Reduce the use counter.
         attack.setUses(attack.getUses() - 1);
+        if (attack.getUses() < 0)
+        {
+            attack.setUses(0);
+        }
     }
 
     public void determineEnemyAction()
@@ -204,6 +208,10 @@ public class Battle
                 }
 
                 action.setUses(action.getUses() - 1);
+                if (action.getUses() < 0)
+                {
+                    action.setUses(0);
+                }
             }
             else
             {
@@ -227,7 +235,13 @@ public class Battle
             {
                 enemy.setCharging(true);
                 battlePanel.getBattleLog().setText(enemy.getName() +" draws back, and appears to begin preparing a powerful attack.");
+
+
                 action.setUses(action.getUses() - 1);
+                if (action.getUses() < 0)
+                {
+                    action.setUses(0);
+                }
             }
         }
         else if (action.getAction().equals("Block"))
@@ -259,6 +273,10 @@ public class Battle
                     battlePanel.getBattleLog().setText("The " + enemy.getName() + " casts a healing spell... and recovers " + difference + " health.");
 
                     action.setUses(action.getUses() - 1);
+                    if (action.getUses() < 0)
+                    {
+                        action.setUses(0);
+                    }
                 } else {
                     //Otherwise, why heal? Do something else.
                     determineEnemyAction();
@@ -288,7 +306,11 @@ public class Battle
                 if (gear.getName().equals("Mysterious Liquid"))
                 {
                     player.removeGear(gear.getName());
-                    player.setCurrentHealth(player.getMaxHealth());
+
+                    int difference = player.getMaxHealth() - player.getCurrentHealth();
+
+                    battlePanel.getPlayerPanel().dropHealthBar(player.getCurrentHealth() + difference, player);
+                    battlePanel.getBattleLog().setText(player.getName() + " drops... but is brought back by a Mysterious Liquid.");
                     return false;
                 }
             }

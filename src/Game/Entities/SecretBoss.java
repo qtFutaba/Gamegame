@@ -53,6 +53,7 @@ public class SecretBoss extends Enemy {
     {
         if (present)
         {
+            this.setCurrentHealth(this.getCurrentHealth() - 25);
             this.setStat("low");
             this.setAttack(this.getStat());
             this.setStat("low");

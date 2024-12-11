@@ -741,6 +741,12 @@ public class GameController implements ActionListener
             int attackIndex = i;
             Attack attack = player.getAttackMove(i);
             String attacklabel = "";
+            boolean outOfUses = false;
+
+            if (attack.getUses() <= 0)
+            {
+                outOfUses = true;
+            }
 
             if (attack.getType().equals("Physical"))
             {
@@ -755,8 +761,11 @@ public class GameController implements ActionListener
             attackButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
             attackButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
             attackButton.setBackground(Color.BLACK);
-            attackButton.setForeground(Color.YELLOW);
+            attackButton.setForeground(Color.RED);
             attackButton.setFocusPainted(false);
+            if (!outOfUses)
+            {
+            attackButton.setForeground(Color.YELLOW);
             attackButton.addActionListener(e -> {
                 // Play the sound effect
                 soundPlayer.play("src/Game/Music/button.wav");
@@ -768,6 +777,7 @@ public class GameController implements ActionListener
 
                 playerAction();
             });
+            }
 
             attackPanel.add(attackButton);
         }
@@ -1036,7 +1046,6 @@ public class GameController implements ActionListener
                     musicPlayer.play(musicPath);
                     musicPlayer.loop();
 
-
                     VictoryPanel victoryPanel = (VictoryPanel) container.getComponent(6);
                     victoryPanel.trueVictory(true);
 
@@ -1050,11 +1059,22 @@ public class GameController implements ActionListener
             }
             else
             {
+                // Stop the current music.
+                musicPlayer.stop();
+
+                // Play new music.
+                String musicPath = "src/Game/Music/mainmenu1.wav";
+                musicPlayer.play(musicPath);
+                musicPlayer.loop();
+
                 reset();
                 CardLayout cardLayout = (CardLayout) container.getLayout();
                 cardLayout.show(container, "gameover");
                 System.out.println("You are dead");
             }
+
+
+
             // Close the dialog
             updateBattle();
             dialog.dispose();
@@ -1102,7 +1122,7 @@ public class GameController implements ActionListener
             Item soyMilk = new Item.SoyMilk();
             Item mysteriousLiquid = new Item.MysteriousLiquid();
 
-            if (selectedItem.equals(soyMilk))
+            if (selectedItem.getName().equals(soyMilk.getName()))
             {
                SecretBoss boss = (SecretBoss) battles.get(5).getEnemy();
                boss.soyMilkPresent(true);
