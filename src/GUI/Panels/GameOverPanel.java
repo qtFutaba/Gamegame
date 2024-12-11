@@ -16,7 +16,7 @@ public class GameOverPanel extends JPanel
         label.setForeground(Color.RED);
 
         // Create the new game button.
-        JButton newGameButton = new JButton("Try Again");
+        JButton newGameButton = new JButton("Main Menu");
         newGameButton.addActionListener(gc);
 
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -28,18 +28,6 @@ public class GameOverPanel extends JPanel
 
         JPanel newGameButtonBuffer = new JPanel();
         newGameButtonBuffer.add(newGameButton);
-
-        // Create the leaderboard button.
-        JButton leaderboardButton = new JButton("Main Menu");
-        leaderboardButton.addActionListener(gc);
-        leaderboardButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
-        leaderboardButton.setBackground(Color.BLACK);
-        leaderboardButton.setForeground(Color.WHITE);
-        leaderboardButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-
-
-        JPanel leaderboardButtonBuffer = new JPanel();
-        leaderboardButtonBuffer.add(leaderboardButton);
 
         // Create the exit button.
         JButton exitButton = new JButton("Exit Game");
@@ -53,16 +41,14 @@ public class GameOverPanel extends JPanel
         exitButtonBuffer.add(exitButton);
 
         // Arrange the components in a grid.
-        JPanel grid = new JPanel(new GridLayout(4, 1, 5, 5));
+        JPanel grid = new JPanel(new GridLayout(3, 1, 5, 5));
         grid.add(label);
         grid.add(newGameButtonBuffer);
-        grid.add(leaderboardButtonBuffer);
         grid.add(exitButtonBuffer);
 
         // Color
         grid.setBackground(Color.BLACK);
         newGameButtonBuffer.setBackground(Color.BLACK);
-        leaderboardButtonBuffer.setBackground(Color.BLACK);
         exitButtonBuffer.setBackground(Color.BLACK);
 
         this.add(grid);

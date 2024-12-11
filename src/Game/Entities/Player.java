@@ -1,5 +1,6 @@
 package Game.Entities;
 
+import Game.Attack;
 import Game.Gear;
 
 import java.util.ArrayList;
@@ -11,19 +12,13 @@ public class Player extends Entity {
 
     public Player()
     {
-        setMaxHealth(5);
-        setCurrentHealth(5);
+        this.setLevel(30);
+        setMaxHealth(75);
+        setCurrentHealth(75);
         setName("Player");
 
-        gear = new ArrayList<Gear>();
-
-        Gear Dagger = new Gear(
-                "Dagger", 2, 0, 0);
-        Gear LeatherScraps = new Gear(
-                "Leather Scraps", 0, 1, 0);
-        gear.add(Dagger);
-        gear.add(LeatherScraps);
-        coinPurse = 0;
+        gear = new ArrayList<>();
+        coinPurse = 50;
     }
 
     public List<Gear> getGear(){return gear;}

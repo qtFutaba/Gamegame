@@ -8,6 +8,7 @@ import javax.swing.border.Border;
 
 public class BattlePanel extends JPanel
 {
+    private JTextField battleLog;
     private EntityPanel playerPanel;
     private EntityPanel enemyPanel;
 
@@ -18,7 +19,7 @@ public class BattlePanel extends JPanel
         //----------------------------------------------------------------------------------------------------------------
         // Create the battle log.
         //----------------------------------------------------------------------------------------------------------------
-        JTextField battleLog = new JTextField();
+        battleLog = new JTextField();
         battleLog.setEditable(false);
         battleLog.setText("An enemy approaches.");
         battleLog.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
@@ -43,7 +44,7 @@ public class BattlePanel extends JPanel
         playerPanel.setMinimumSize(sceneSize);
         playerPanel.setMaximumSize(sceneSize);
 
-        enemyPanel = new EntityPanel(gc.getEnemy(gc.getBattleCounter()),gc);
+        enemyPanel = new EntityPanel(gc.getBattle(gc.getBattleCounter()).getEnemy(),gc);
         enemyPanel.setPreferredSize(sceneSize);
         enemyPanel.setMinimumSize(sceneSize);
         enemyPanel.setMaximumSize(sceneSize);
@@ -74,16 +75,17 @@ public class BattlePanel extends JPanel
 
         String fightIconFilename = "src/Sprites/attack.png";
         Icon fightIcon = new ImageIcon(fightIconFilename);
-        JLabel fightImage = new JLabel();
-        fightImage.setIcon(fightIcon);
+        fightButton.setIcon(fightIcon);
+
+        fightButton.setVerticalTextPosition(SwingConstants.TOP);
+        fightButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
         JPanel fightButtonBuffer = new JPanel();
         fightButtonBuffer.setLayout(new BoxLayout(fightButtonBuffer, BoxLayout.Y_AXIS));
         fightButtonBuffer.add(fightButton);
-        fightButtonBuffer.add(fightImage);
 
         fightButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        fightImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         //Utilities.
         JButton utilityButton = new JButton("Utility");
@@ -97,16 +99,39 @@ public class BattlePanel extends JPanel
 
         String utilityIconFilename = "src/Sprites/utility.png";
         Icon utilityIcon = new ImageIcon(utilityIconFilename);
-        JLabel utilityImage = new JLabel();
-        utilityImage.setIcon(utilityIcon);
+        utilityButton.setIcon(utilityIcon);
+
+        utilityButton.setVerticalTextPosition(SwingConstants.TOP);
+        utilityButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
         JPanel utilityButtonBuffer = new JPanel();
         utilityButtonBuffer.setLayout(new BoxLayout(utilityButtonBuffer, BoxLayout.Y_AXIS));
         utilityButtonBuffer.add(utilityButton);
-        utilityButtonBuffer.add(utilityImage);
 
         utilityButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        utilityImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        //Stats.
+        JButton statsButton = new JButton("Stats");
+        statsButton.addActionListener(gc);
+
+        statsButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        statsButton.setBackground(Color.BLACK);
+        statsButton.setForeground(Color.YELLOW);
+        statsButton.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        statsButton.setFocusPainted(false);
+
+        String statsIconFilename = "src/Sprites/stats.png";
+        Icon statsIcon = new ImageIcon(statsIconFilename);
+        statsButton.setIcon(statsIcon);
+
+        statsButton.setVerticalTextPosition(SwingConstants.TOP);
+        statsButton.setHorizontalTextPosition(SwingConstants.CENTER);
+
+        JPanel statsButtonBuffer = new JPanel();
+        statsButtonBuffer.setLayout(new BoxLayout(statsButtonBuffer, BoxLayout.Y_AXIS));
+        statsButtonBuffer.add(statsButton);
+
+        utilityButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Surrender.
         JButton surrenderButton = new JButton("Surrender");
@@ -120,24 +145,25 @@ public class BattlePanel extends JPanel
 
         String surrenderIconFilename = "src/Sprites/surrender.png";
         Icon surrenderIcon = new ImageIcon(surrenderIconFilename);
-        JLabel surrenderImage = new JLabel();
-        surrenderImage.setIcon(surrenderIcon);
+        surrenderButton.setIcon(surrenderIcon);
+
+        surrenderButton.setVerticalTextPosition(SwingConstants.TOP);
+        surrenderButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
         JPanel surrenderButtonBuffer = new JPanel();
         surrenderButtonBuffer.setLayout(new BoxLayout(surrenderButtonBuffer, BoxLayout.Y_AXIS));
         surrenderButtonBuffer.add(surrenderButton);
-        surrenderButtonBuffer.add(surrenderImage);
 
         surrenderButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        surrenderImage.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
         //----------------------------------------------------------------------------------------------------------------
         //Add choices to the choices panel.
         //----------------------------------------------------------------------------------------------------------------
-        JPanel choices = new JPanel(new GridLayout(1, 3, 0, 0));
+        JPanel choices = new JPanel();
         choices.add(fightButtonBuffer);
         choices.add(utilityButtonBuffer);
+        choices.add(statsButtonBuffer);
         choices.add(surrenderButtonBuffer);
 
 
@@ -163,8 +189,16 @@ public class BattlePanel extends JPanel
         battleScene.setBackground(Color.BLACK);
         fightButtonBuffer.setBackground(Color.BLACK);
         utilityButtonBuffer.setBackground(Color.BLACK);
+        statsButtonBuffer.setBackground(Color.BLACK);
         surrenderButtonBuffer.setBackground(Color.BLACK);
 
         this.add(mainGrid);
     }
+
+    public JTextField getBattleLog() { return battleLog; }
+
+    public EntityPanel getEnemyPanel() {
+        return enemyPanel;
+    }
+    public EntityPanel getPlayerPanel() {return playerPanel; }
 }

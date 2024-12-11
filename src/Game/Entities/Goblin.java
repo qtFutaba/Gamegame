@@ -1,5 +1,8 @@
 package Game.Entities;
 
+import Game.Action;
+import Game.Attack;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -21,12 +24,18 @@ public class Goblin extends Enemy {
             "Hehehehe!",
             "Grrr...",
             "You're meat to my blade!");
+    private static final List<String> tauntMsgs = Arrays.asList(
+            "Hehehehe! Your purse will soon be mine!",
+            "You look like you crawled out of a horse's rear! He-hehehaha!",
+            "I can't wait to slice you up!");
+
     private final Random rand = new Random();
 
     public Goblin() {
         this.setName("Goblin");
-        this.setMaxHealth(100);
-        this.setCurrentHealth(100);
+        this.setLevel(26);
+        this.setMaxHealth(60);
+        this.setCurrentHealth(60);
         this.setCoinReward(20);
         this.setSprite("src/Sprites/goblin.png");
         this.setStat("low");
@@ -34,25 +43,29 @@ public class Goblin extends Enemy {
         this.setStat("low");
         this.setDefense(this.getStat());
         this.setStat("low");
-        this.setMagicPoints(this.getStat());
+        this.setMagic(this.getStat());
+        this.setTurnWasteChance(30);
+
+        this.attacks.add(new Attack("Slash", "Physical", 20, 20, 20));
+        this.attacks.add(new Attack("Mad Stab", "Physical", 30, 5, 5));
+
+        this.actions.add(new Action("Stall", false, 1));
     }
 
     public String getGreeting() {
         return (String)greetingMsgs.get(this.rand.nextInt(greetingMsgs.size()));
     }
-
-
     public String getVictoryMsg() {
         return (String)victoryMsgs.get(this.rand.nextInt(victoryMsgs.size()));
     }
-
-
     public String getDefeatMsg() {
         return (String)defeatMsgs.get(this.rand.nextInt(defeatMsgs.size()));
     }
-
     public String getAttackMsg() {
         return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
+    }
+    public String getTauntMsg() {
+        return (String)tauntMsgs.get(this.rand.nextInt(tauntMsgs.size()));
     }
 }
 
