@@ -1,13 +1,11 @@
 package GUI.Controllers;
 
 import GUI.Panels.*;
+import Game.*;
 import Game.Action;
-import Game.Attack;
-import Game.Battle;
 import Game.Entities.*;
 import Game.Music.MusicPlayer;
 import src.Game.Item;
-import Game.Gear;
 
 import java.awt.*;
 import javax.swing.*;
@@ -186,6 +184,12 @@ public class GameController implements ActionListener
 
         // Opens a high score charPanel.
         else if (command.equals("Leaderboard")) {
+
+            // Update Leaderboard Panels with fresh scores
+            LeaderboardPanel leaderboardPanel = new LeaderboardPanel(this);
+            container.remove(1);
+            container.add(leaderboardPanel, "leaderboard", 1);
+
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "leaderboard");
         }
@@ -1022,6 +1026,10 @@ public class GameController implements ActionListener
             {
                 if (destination.equals("incompletevictory"))
                 {
+                    // Save score on incomplete victory
+                    Score score = new Score(player.getName(), player.getCoinPurse());
+                    score.saveScore();
+
                     // Stop the current music.
                     musicPlayer.stop();
 
@@ -1038,6 +1046,11 @@ public class GameController implements ActionListener
                 }
                 else if(destination.equals("truevictory"))
                 {
+
+                    // Save score on victory
+                    Score score = new Score(player.getName(), player.getCoinPurse());
+                    score.saveScore();
+
                     // Stop the current music.
                     musicPlayer.stop();
 
@@ -1059,6 +1072,10 @@ public class GameController implements ActionListener
             }
             else
             {
+                // Save score
+                Score score = new Score(player.getName(), player.getCoinPurse());
+                score.saveScore();
+
                 // Stop the current music.
                 musicPlayer.stop();
 
