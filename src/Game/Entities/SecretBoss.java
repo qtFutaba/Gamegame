@@ -18,7 +18,7 @@ public class SecretBoss extends Enemy {
     private final Random rand = new Random();
 
     public SecretBoss() {
-        this.setLevel(34);
+        this.setLevel(33);
         this.setName("Dr. Baarsch");
         this.setMaxHealth(200);
         this.setCurrentHealth(200);
@@ -31,26 +31,6 @@ public class SecretBoss extends Enemy {
         this.setStat("high");
         this.setMagic(this.getStat());
         this.setTurnWasteChance(25);
-    }
-
-
-    public String getGreeting() {
-        return (String)greetingMsgs.get(this.rand.nextInt(greetingMsgs.size()));
-    }
-
-
-    public String getVictoryMsg() {
-        return (String)victoryMsgs.get(this.rand.nextInt(victoryMsgs.size()));
-    }
-
-
-    public String getDefeatMsg() {
-        return (String)defeatMsgs.get(this.rand.nextInt(defeatMsgs.size()));
-    }
-
-
-    public String getAttackMsg() {
-        return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
     }
 
     public void soyMilkPresent(boolean present)

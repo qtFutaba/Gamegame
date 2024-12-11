@@ -1,6 +1,7 @@
 package GUI.Panels;
 
 import GUI.Controllers.GameController;
+import Game.Entities.Player;
 import src.Game.Item;
 
 import javax.swing.*;
@@ -11,13 +12,17 @@ import java.util.Random;
 
 public class ItemPanel extends JPanel {
     private JLabel messageLabel;
+    private JLabel coinCount;
     public boolean itemPurchased = false;
     private JPanel itemPanel;
     private JTextField itemLog;
     private boolean needSoyMilk;
+    private Player player;
+
 
     public ItemPanel(GameController gc) {
         this.setLayout(new BorderLayout());
+        this.player = gc.getPlayer();
 
         this.itemLog = createItemLog();
         this.add(itemLog, BorderLayout.NORTH);
@@ -79,6 +84,23 @@ public class ItemPanel extends JPanel {
         messageLabel.setOpaque(true);
         messagePanel.add(messageLabel, BorderLayout.CENTER);
 
+        // Create a coin count display.
+        JPanel coinPanel = new JPanel(new BorderLayout());
+        coinCount = new JLabel(player.getCoinPurse() + " Coins");
+
+        String coinFilename = "src/Sprites/coin.png";
+        Icon coinIcon = new ImageIcon(coinFilename);
+        coinCount.setIcon(coinIcon);
+
+        coinCount.setBackground(Color.BLACK);
+        coinCount.setForeground(Color.YELLOW);
+        coinCount.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        coinCount.setOpaque(true);
+
+        coinPanel.add(coinCount);
+
+        messagePanel.add(coinPanel, BorderLayout.WEST);
+
         // Create "Next Battle" (exit) button
         JPanel exitPanel = new JPanel(new BorderLayout());
         JButton exitButton = new JButton("Next Battle");
@@ -98,6 +120,7 @@ public class ItemPanel extends JPanel {
     /// ///////////////////////////////////////////
 
     public void resetPanel(GameController gc) {
+        
         // Reset ItemPanel for new items
         this.itemPanel.removeAll();
         List<Item> items = generateItems(gc);
@@ -115,6 +138,7 @@ public class ItemPanel extends JPanel {
         this.itemLog.setText("You may choose an item.");
         this.messageLabel.setText("Select an item.");
         this.messageLabel.setForeground(Color.YELLOW);
+        updateCoinCount();
 
         // Refresh panel
         this.revalidate();
@@ -262,8 +286,9 @@ public class ItemPanel extends JPanel {
             if (message.contains("Not enough coins")) {
                 updateMessage(message, Color.RED);
             } else {
-                updateMessage(message, Color.YELLOW);
+                updateMessage("Thank you for your purchase... heheh! Now scram!", Color.YELLOW);
                 itemPurchased = true;
+                updateCoinCount();
             }
             confirmationDialog.dispose();
         });
@@ -281,6 +306,11 @@ public class ItemPanel extends JPanel {
         confirmationDialog.add(buttonPanel, BorderLayout.SOUTH);
         confirmationDialog.setLocationRelativeTo(this);
         confirmationDialog.setVisible(true);
+    }
+
+    public void updateCoinCount()
+    {
+        coinCount.setText(player.getCoinPurse() + " Coins");
     }
 
     public void updateMessage(String message, Color color) {

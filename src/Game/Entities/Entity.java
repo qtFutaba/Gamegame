@@ -51,29 +51,35 @@ public class Entity {
         Random rand = new Random();
         switch (level.toLowerCase()) {
             case LOW:
-                min = 30;
-                max = 45;
+                min = 50;
+                max = 55;
                 stat = rand.nextInt(max - min + 1) + min;
                 break;
             case STANDARD:
-                min = 50;
+                min = 56;
                 max = 65;
                 stat = rand.nextInt(max - min + 1) + min;
                 break;
             case HIGH:
-                min = 70;
-                max = 95;
+                min = 66;
+                max = 75;
                 stat = rand.nextInt(max - min + 1) + min;
                 break;
             case ULTRA:
-                stat = 100;
+                stat = 80;
                 break;
             default:
-                stat = 20;
+                stat = 50;
                 break;
         }
     }
 
+    public int getLevel() {
+        return level;
+    }
+    public void setLevel(int level) {
+        this.level = level;
+    }
     public int getAttack(){return attack;}
     public int getDefense(){return defense;}
     public int getMagic(){return magic;}
@@ -119,11 +125,5 @@ public class Entity {
         return attacks.get(i);
     }
 
-    public int getLevel() {
-        return level;
-    }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
 }

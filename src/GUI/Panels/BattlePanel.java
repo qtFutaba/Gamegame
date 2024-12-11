@@ -200,4 +200,5 @@ public class BattlePanel extends JPanel
     public EntityPanel getEnemyPanel() {
         return enemyPanel;
     }
+    public EntityPanel getPlayerPanel() {return playerPanel; }
 }

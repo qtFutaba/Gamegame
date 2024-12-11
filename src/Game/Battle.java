@@ -1,5 +1,7 @@
 package Game;
 
+import GUI.Panels.BattlePanel;
+import GUI.Panels.EntityPanel;
 import Game.Entities.*;
 import Game.Music.MusicPlayer;
 
@@ -11,7 +13,9 @@ public class Battle
     private Player player;
     private Enemy enemy;
     private MusicPlayer soundPlayer;
-    private JTextField battleLog;
+    private BattlePanel battlePanel;
+    private EntityPanel enemyPanel;
+
 
     public Battle(Player player, Enemy enemy)
     {
@@ -47,6 +51,19 @@ public class Battle
 
     public void attack(Entity attacker, Entity defender, Attack attack)
     {
+        if (attacker instanceof Enemy)
+        {
+            battlePanel.getBattleLog().setText("\"" + ((Enemy) attacker).getAttackMsg()+ "\"");
+            Timer messagetimer = new Timer(1250, e -> {
+                battlePanel.getBattleLog().setText(attacker.getName() + " used " + attack.getName() + "!");
+            });
+            messagetimer.setRepeats(false);
+            messagetimer.start();
+        }
+        else
+        {
+            battlePanel.getBattleLog().setText(attacker.getName() + " used " + attack.getName() + "!");
+        }
         Random random = new Random();
 
         // Critical multiplier
@@ -63,7 +80,7 @@ public class Battle
             attacker.setCharging(false);
         }
 
-        int damage = 0;
+        int damage;
         if (!defender.isBlocking()) {
 
             // Random factor between 220 and 255
@@ -84,10 +101,27 @@ public class Battle
 
             // Damage formula
             damage = (int) ((((((2 * attacker.getLevel() * critMultiplier + 2) + 2) * attack.getPower() * (attackerAttack / defenderDefense)) / 50) + 2) * randomFactor);
-            
+            if (attacker instanceof Player)
+            {
+                battlePanel.getEnemyPanel().dropHealthBar(defender.getCurrentHealth() - damage);
+            }
+            else
+            {
+                battlePanel.getPlayerPanel().dropHealthBar(defender.getCurrentHealth() - damage);
+            }
+
+            Timer damagetimer = new Timer(1250, e -> {
+                battlePanel.getBattleLog().setText(battlePanel.getBattleLog().getText() + "\n" + defender.getName() +" took " + damage + " damage.");
+            });
+            damagetimer.setRepeats(false);
+            damagetimer.start();
+
+
         }
         else
         {
+            damage = 0;
+            battlePanel.getBattleLog().setText(defender.getName() +" blocked the attack.");
             defender.setBlocking(false);
         }
 
@@ -111,7 +145,6 @@ public class Battle
             if (chance < 30)
             {
                 int actionindex = random.nextInt(enemy.getActionCount());
-
                 enemyAction(enemy.getAction(actionindex));
             }
             
@@ -138,11 +171,40 @@ public class Battle
             else
             {
                 enemy.setCharging(true);
+                battlePanel.getBattleLog().setText(enemy.getName() +" draws back, and appears to begin preparing a powerful attack.");
             }
         }
         else if (action.getAction().equals("Block"))
         {
             enemy.setBlocking(true);
+            battlePanel.getBattleLog().setText(enemy.getName() +" raises their guard.");
+
+        }
+        else if (action.getAction().equals("Stall"))
+        {
+            battlePanel.getBattleLog().setText(enemy.getName() +" taunts you.");
+        }
+        else if (action.getAction().equals("Heal"))
+        {
+            //Determine the difference between the enemy's current health and their max health.
+            int difference = enemy.getMaxHealth() - enemy.getCurrentHealth();
+
+            //If they have taken damage...
+            if (difference > 0)
+            {
+                //Determine if recovering 50 health will make them go over their max hp.
+                if (difference > 50)
+                {
+                    difference = 50;
+                }
+
+                //Then heal at most 50 health.
+
+                battlePanel.getEnemyPanel().dropHealthBar(enemy.getCurrentHealth() + difference);
+                battlePanel.getBattleLog().setText(enemy.getName() +" casts a healing spell... and recovers " + difference + " health.");
+            }
+            //Otherwise, why heal? Do something else.
+            determineEnemyAction();
         }
     }
 
@@ -200,8 +262,8 @@ public class Battle
         this.player = player;
     }
 
-    public void setBattleLog(JTextField battleLog)
+    public void setBattlePanel(BattlePanel battlePanel)
     {
-        this.battleLog = battleLog;
+        this.battlePanel = battlePanel;
     }
 }

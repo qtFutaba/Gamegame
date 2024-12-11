@@ -19,10 +19,10 @@ public class MainGameGUI extends JFrame
         this.getContentPane().setBackground(Color.BLACK);
 
         // Start fullscreen.
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        this.setUndecorated(true);
-        gd.setFullScreenWindow(this);
+        //GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        //GraphicsDevice gd = ge.getDefaultScreenDevice();
+        //this.setUndecorated(true);
+        //gd.setFullScreenWindow(this);
 
         // Create the card layout container.
         CardLayout cardLayout = new CardLayout();

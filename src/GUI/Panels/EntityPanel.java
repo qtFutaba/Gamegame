@@ -64,6 +64,10 @@ public class EntityPanel extends JPanel
 
         // CALCULATE HEALTH BAR FILL
         int currentHP = entity.getCurrentHealth(); // Get current health
+        if (currentHP < 0)
+        {
+            currentHP = 0;
+        }
         int maxHP = entity.getMaxHealth();  // Get max health
         int filledWidth = (int) ((double) currentHP / maxHP * healthBarWidth); // Scale width
 
@@ -101,5 +105,42 @@ public class EntityPanel extends JPanel
 
         this.revalidate();
         this.repaint();
+    }
+
+    public void dropHealthBar(int newHealth)
+    {
+        int currentHP = entity.getCurrentHealth();
+        int targetHP = newHealth;
+
+        int animationDuration = 250;                    // Total animation duration in milliseconds
+        int interval = 1;                              // Timer interval in milliseconds
+        int totalSteps = animationDuration / interval;  // Total number of animation steps
+        int healthDifference = targetHP - currentHP;
+        double step = (double) healthDifference / totalSteps; // Calculate dynamic step size
+
+        // Create a mutable variable for the animation progress
+        final int[] animatedHealth = {currentHP};
+
+        Timer timer = new Timer(interval, null);
+
+        timer.addActionListener(e -> {
+            // Incrementally update health
+            animatedHealth[0] += step;
+
+            // Stop when the target is reached
+            if ((step < 0 && animatedHealth[0] <= targetHP) || (step > 0 && animatedHealth[0] >= targetHP)) {
+                animatedHealth[0] = targetHP; // Snap to exact target value
+                entity.setCurrentHealth(targetHP);
+                this.repaint();
+                ((Timer) e.getSource()).stop();
+                return;
+            }
+
+            // Update entity's health and repaint
+            entity.setCurrentHealth(animatedHealth[0]);
+            this.repaint();
+        });
+
+        timer.start();
     }
 }

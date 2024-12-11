@@ -28,7 +28,7 @@ public class Goblin extends Enemy {
 
     public Goblin() {
         this.setName("Goblin");
-        this.setLevel(25);
+        this.setLevel(26);
         this.setMaxHealth(60);
         this.setCurrentHealth(60);
         this.setCoinReward(20);
@@ -41,28 +41,12 @@ public class Goblin extends Enemy {
         this.setMagic(this.getStat());
         this.setTurnWasteChance(45);
 
-        this.attacks.add(new Attack("Stab", "Physical", 30, 20, 20));
-        this.attacks.add(new Attack("Stab", "Physical", 50, 5, 5));
+        this.attacks.add(new Attack("Slash", "Physical", 30, 20, 20));
+        this.attacks.add(new Attack("Mad Stab", "Physical", 50, 5, 5));
 
         this.actions.add(new Action("Stall", false, 1));
     }
 
-    public String getGreeting() {
-        return (String)greetingMsgs.get(this.rand.nextInt(greetingMsgs.size()));
-    }
 
-
-    public String getVictoryMsg() {
-        return (String)victoryMsgs.get(this.rand.nextInt(victoryMsgs.size()));
-    }
-
-
-    public String getDefeatMsg() {
-        return (String)defeatMsgs.get(this.rand.nextInt(defeatMsgs.size()));
-    }
-
-    public String getAttackMsg() {
-        return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
-    }
 }
 

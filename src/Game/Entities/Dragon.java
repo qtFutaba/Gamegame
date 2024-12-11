@@ -1,5 +1,8 @@
 package Game.Entities;
 
+import Game.Action;
+import Game.Attack;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -37,25 +40,14 @@ public class Dragon extends Enemy {
         this.setStat("high");
         this.setMagic(this.getStat());
         this.setTurnWasteChance(20);
+
+        this.attacks.add(new Attack("Claw Strike", "Physical", 40, 40, 40));
+        this.attacks.add(new Attack("Fearsome Crunch", "Physical", 60, 5, 5));
+        this.attacks.add(new Attack("Flame Breath", "Magic", 90, 2, 2));
+
+        this.actions.add(new Action("Stall", false, 1));
+        this.actions.add(new Action("Charge", false, 1));
+        this.actions.add(new Action("Block", false, 1));
+
     }
-
-    public String getGreeting() {
-        return (String) greetingMsgs.get(this.rand.nextInt(greetingMsgs.size()));
-    }
-
-
-    public String getVictoryMsg() {
-        return (String) victoryMsgs.get(this.rand.nextInt(victoryMsgs.size()));
-    }
-
-
-    public String getDefeatMsg() {
-        return (String) defeatMsgs.get(this.rand.nextInt(defeatMsgs.size()));
-    }
-
-
-    public String getAttackMsg() {
-        return (String) attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
-    }
-
 }
