@@ -24,11 +24,6 @@ public class Battle
         this.soundPlayer = new MusicPlayer();
     }
 
-    public void setSoundPlayer(MusicPlayer soundPlayer)
-    {
-        this.soundPlayer = soundPlayer;
-    }
-
     public static boolean isCriticalHit()
     {
         Random random = new Random();
@@ -53,12 +48,7 @@ public class Battle
     {
         if (attacker instanceof Enemy)
         {
-            battlePanel.getBattleLog().setText("\"" + ((Enemy) attacker).getAttackMsg()+ "\"");
-            Timer messagetimer = new Timer(1250, e -> {
-                battlePanel.getBattleLog().setText(attacker.getName() + " used " + attack.getName() + "!");
-            });
-            messagetimer.setRepeats(false);
-            messagetimer.start();
+            battlePanel.getBattleLog().setText("\"" + ((Enemy) attacker).getAttackMsg()+ "\" " + attacker.getName() + " used " + attack.getName() + "!");
         }
         else
         {
@@ -72,6 +62,8 @@ public class Battle
         if (isCriticalHit())
         {
             critMultiplier = 2;
+
+            battlePanel.getBattleLog().setText(battlePanel.getBattleLog().getText() + " Critical Hit!");
         }
         
         if (attacker.isCharging())
@@ -80,8 +72,16 @@ public class Battle
             attacker.setCharging(false);
         }
 
+        if (attacker.isBlocking())
+        {
+            battlePanel.getBattleLog().setText(attacker.getName() + " drops their guard.");
+            attacker.setBlocking(false);
+        }
+
         int damage;
-        if (!defender.isBlocking()) {
+        if (!defender.isBlocking() && !attacker.isBlocking()) {
+
+            String soundEffectFileName;
 
             // Random factor between 220 and 255
             double randomFactor = (220 + random.nextInt(36)) / 255.0;
@@ -94,34 +94,39 @@ public class Battle
             if (attack.getType().equals("Physical")) {
                 attackerAttack = attacker.getAttack();
                 defenderDefense = defender.getDefense();
+                soundEffectFileName = "src/Game/Music/physicalattack.wav";
             } else if (attack.getType().equals("Magic")) {
                 attackerAttack = attacker.getMagic();
                 defenderDefense = defender.getMagic();
+                soundEffectFileName = "src/Game/Music/magicattack.wav";
+            } else
+            {
+                soundEffectFileName = "";
             }
+            Timer soundEffectTimer = new Timer(100, e ->
+            {
+                this.soundPlayer.play(soundEffectFileName);
+            });
+            soundEffectTimer.setRepeats(false);
+            soundEffectTimer.start();
 
             // Damage formula
-            damage = (int) ((((((2 * attacker.getLevel() * critMultiplier + 2) + 2) * attack.getPower() * (attackerAttack / defenderDefense)) / 50) + 2) * randomFactor);
+            damage = (int) ((((((2 * attacker.getLevel() * critMultiplier + 2) + 2) * attack.getPower() * ((double) attackerAttack / defenderDefense)) / 50) + 2) * randomFactor);
             if (attacker instanceof Player)
             {
-                battlePanel.getEnemyPanel().dropHealthBar(defender.getCurrentHealth() - damage);
+                battlePanel.getEnemyPanel().dropHealthBar(defender.getCurrentHealth() - damage , defender);
             }
             else
             {
-                battlePanel.getPlayerPanel().dropHealthBar(defender.getCurrentHealth() - damage);
+                battlePanel.getPlayerPanel().dropHealthBar(defender.getCurrentHealth() - damage, defender);
             }
 
-            Timer damagetimer = new Timer(1250, e -> {
-                battlePanel.getBattleLog().setText(battlePanel.getBattleLog().getText() + "\n" + defender.getName() +" took " + damage + " damage.");
-            });
-            damagetimer.setRepeats(false);
-            damagetimer.start();
-
-
+            battlePanel.getBattleLog().setText(battlePanel.getBattleLog().getText() + " " + defender.getName() + " takes " + damage + " damage!");
         }
         else
         {
             damage = 0;
-            battlePanel.getBattleLog().setText(defender.getName() +" blocked the attack.");
+            battlePanel.getBattleLog().setText(battlePanel.getBattleLog().getText() + " " + defender.getName() +" blocked the attack.");
             defender.setBlocking(false);
         }
 
@@ -155,8 +160,58 @@ public class Battle
                 attack(enemy,player,enemy.getAttackMove(attackindex));
             }
         }
+
+        else
+        {
+            stall();
+        }
     }
-    
+
+    public void stall()
+    {
+        battlePanel.getBattleLog().setText("The " + enemy.getName() +" taunts you. \"" + enemy.getTauntMsg()+ "\"");
+    }
+
+    public void playerAction(Action action)
+    {
+
+        if (action.getAction().equals("Guard"))
+        {
+            player.setBlocking(true);
+            battlePanel.getBattleLog().setText(player.getName() + " raises their guard.");
+
+        }
+        else if (action.getAction().equals("Healing Potion"))
+        {
+            if (action.getUses() > 0)
+            {
+                //Determine the difference between the player's current health and their max health.
+                int difference = player.getMaxHealth() - player.getCurrentHealth();
+
+                //If you have taken damage...
+                if (difference > 0) {
+                    //Determine if recovering 50 health will make you go over your max hp.
+                    if (difference > 50) {
+                        difference = 50;
+                    }
+
+                    //Then heal at most 50 health.
+
+                    battlePanel.getPlayerPanel().dropHealthBar(player.getCurrentHealth() + difference, player);
+                    battlePanel.getBattleLog().setText(player.getName() + " chugs a potion... and heals " + difference + " health.");
+                } else {
+                    battlePanel.getBattleLog().setText(player.getName() + " chugs a potion... but nothing happens.");
+                }
+
+                action.setUses(action.getUses() - 1);
+            }
+            else
+            {
+                battlePanel.getBattleLog().setText(player.getName() + " reaches for a potion, but turns up empty.");
+            }
+        }
+    }
+
     public void enemyAction(Action action)
     {
         if (action.getAction().equals("Charge"))
@@ -172,39 +227,43 @@ public class Battle
             {
                 enemy.setCharging(true);
                 battlePanel.getBattleLog().setText(enemy.getName() +" draws back, and appears to begin preparing a powerful attack.");
+                action.setUses(action.getUses() - 1);
             }
         }
         else if (action.getAction().equals("Block"))
         {
             enemy.setBlocking(true);
-            battlePanel.getBattleLog().setText(enemy.getName() +" raises their guard.");
+            battlePanel.getBattleLog().setText("The " + enemy.getName() +" raises their guard.");
 
         }
         else if (action.getAction().equals("Stall"))
         {
-            battlePanel.getBattleLog().setText(enemy.getName() +" taunts you.");
+            stall();
         }
         else if (action.getAction().equals("Heal"))
         {
-            //Determine the difference between the enemy's current health and their max health.
-            int difference = enemy.getMaxHealth() - enemy.getCurrentHealth();
+            if (action.getUses() > 0) {
+                //Determine the difference between the enemy's current health and their max health.
+                int difference = enemy.getMaxHealth() - enemy.getCurrentHealth();
 
-            //If they have taken damage...
-            if (difference > 0)
-            {
-                //Determine if recovering 50 health will make them go over their max hp.
-                if (difference > 50)
-                {
-                    difference = 50;
+                //If they have taken damage...
+                if (difference > 0) {
+                    //Determine if recovering 50 health will make them go over their max hp.
+                    if (difference > 50) {
+                        difference = 50;
+                    }
+
+                    //Then heal at most 50 health.
+
+                    battlePanel.getEnemyPanel().dropHealthBar(enemy.getCurrentHealth() + difference, enemy);
+                    battlePanel.getBattleLog().setText("The " + enemy.getName() + " casts a healing spell... and recovers " + difference + " health.");
+
+                    action.setUses(action.getUses() - 1);
+                } else {
+                    //Otherwise, why heal? Do something else.
+                    determineEnemyAction();
                 }
-
-                //Then heal at most 50 health.
-
-                battlePanel.getEnemyPanel().dropHealthBar(enemy.getCurrentHealth() + difference);
-                battlePanel.getBattleLog().setText(enemy.getName() +" casts a healing spell... and recovers " + difference + " health.");
             }
-            //Otherwise, why heal? Do something else.
-            determineEnemyAction();
         }
     }
 
@@ -226,7 +285,7 @@ public class Battle
         {
             for (Gear gear : player.getGear())
             {
-                if (gear.getName().equals("StrangeLiquid"))
+                if (gear.getName().equals("Mysterious Liquid"))
                 {
                     player.removeGear(gear.getName());
                     player.setCurrentHealth(player.getMaxHealth());
@@ -247,19 +306,9 @@ public class Battle
         return this.enemy;
     }
 
-    public void setEnemy(Enemy enemy)
-    {
-        this.enemy = enemy;
-    }
-
     public Player getPlayer()
     {
         return player;
-    }
-
-    public void setPlayer(Player player)
-    {
-        this.player = player;
     }
 
     public void setBattlePanel(BattlePanel battlePanel)

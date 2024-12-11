@@ -32,6 +32,12 @@ public class SettingsPanel extends JPanel {
         musicVolumeSlider.setPaintTicks(false);
         musicVolumeSlider.setPaintLabels(false);
 
+        // Add a ChangeListener to the slider to update the volume
+        musicVolumeSlider.addChangeListener(e -> {
+            int volumeValue = musicVolumeSlider.getValue();
+            gc.getMusicPlayer().setVolume(volumeValue);
+        });
+
         musicVolumeSlider.setBackground(Color.BLACK);
 
         musicVolumeSettingBuffer.add(musicVolumeSettingLabel);

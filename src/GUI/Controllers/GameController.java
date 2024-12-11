@@ -29,11 +29,12 @@ public class GameController implements ActionListener
     private MusicPlayer soundPlayer;
     private String playerName;
     private boolean devMode;
+    private int playerAttackActionIndex;
 
-    // Constructor for the initial controller.
+    // Constructor for the main game controller.
     public GameController(JPanel container)
     {
-        // Initialize MusicPlayer
+        // Initialize MusicPlayer.
         musicPlayer = new MusicPlayer();
 
         // Initialize SoundPlayer
@@ -50,6 +51,7 @@ public class GameController implements ActionListener
         this.battleCounter = 0;
         this.classChoice = "";
         this.devMode = false;
+        this.playerAttackActionIndex = 0;
 
         battles.add(new Battle(this.player, new Goblin()));
         battles.add(new Battle(this.player, new Wizard()));
@@ -59,12 +61,17 @@ public class GameController implements ActionListener
         battles.add(new Battle(this.player, new SecretBoss()));
     }
 
-    // Handle button clicks.
+    // HANDLE ALL BUTTON CLICKS.
+    /*
+    EFFECTIVELY, EACH BUTTON IS CALLED BY NAME.
+    EACH PANEL HAS ITS OWN BUTTONS, BUT SOME SHARE THE SAME FUNCTION (IE: MAIN MENU).
+    DEPENDING ON THOSE ACTIONS, CALL THE FUNCTION APPROPRIATE.
+     */
     public void actionPerformed(ActionEvent ae) {
         // Get the name of the button clicked.
         String command = ae.getActionCommand();
 
-        // Play a sound effect.
+        // Play a sound effect when a button is clicked.
         soundPlayer.play("src/Game/Music/button.wav");
 
         // For certain buttons, create two borders for unselected or selected choices.
@@ -122,7 +129,8 @@ public class GameController implements ActionListener
         }
 
         // Create character and start the game.
-        else if (command.equals("Begin Your Journey...")) {
+        else if (command.equals("Begin Your Journey..."))
+        {
             // Get the name entered by the user
             playerName = panel.getNameFieldText();
 
@@ -131,22 +139,28 @@ public class GameController implements ActionListener
             {
                 showError(panel, "You must have a name, right?");
             }
+            // Check if the player has actually picked a class.
             else if (classChoice.equals(""))
             {
                 showError(panel, "You must choose a class.");
             }
+            //If the player has put in a name and selected a class, create a character and start the game.
             else
             {
                 //Create the character.
                 createCharacter();
 
+                //Initialize the first battle panel.
                 firstBattle = new BattlePanel(this);
                 container.add(firstBattle, "battle");
 
+                //Connect the battle panel to the battle class.
                 setBattlePanels();
 
-                firstBattle.getBattleLog().setText("\"" + battles.get(battleCounter).getEnemy().getGreeting()+ "\"");
+                //Enemy greeting.
+                firstBattle.getBattleLog().setText("An enemy " + battles.get(battleCounter).getEnemy().getName() + " draws near. \"" + battles.get(battleCounter).getEnemy().getGreeting()+ "\"");
 
+                //Open the battle panel.
                 CardLayout cardLayout = (CardLayout) container.getLayout();
                 cardLayout.show(container, "battle");
 
@@ -166,14 +180,12 @@ public class GameController implements ActionListener
         //-----------------------------------------------------------------------
         // Start the game.
         else if (command.equals("New Game")) {
-            //CharacterCreationPanel newgamePanel = (CharacterCreationPanel) container.getComponent(2);
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "charactercreation");
         }
 
         // Opens a high score charPanel.
         else if (command.equals("Leaderboard")) {
-            //LeaderboardPanel scoresPanel = (LeaderboardPanel) container.getComponent(1);
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "leaderboard");
         }
@@ -183,13 +195,13 @@ public class GameController implements ActionListener
             System.exit(0);
         }
 
-        // Show settings.
+        // Show settings panel.
         else if (command.equals("Settings")) {
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "settings");
         }
 
-        // Show credits.
+        // Show credits panel.
         else if (command.equals("Credits")) {
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "credits");
@@ -200,7 +212,6 @@ public class GameController implements ActionListener
         //-----------------------------------------------------------------------
         // Return to main menu.
         else if (command.equals("Return to Main Menu.")) {
-            //MainMenuPanel mainMenuPanel = (MainMenuPanel) container.getComponent(0);
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "mainmenu");
         }
@@ -208,18 +219,19 @@ public class GameController implements ActionListener
         //-----------------------------------------------------------------------
         //BATTLE
         //-----------------------------------------------------------------------
-        // Opens a charPanel containing player attacking moves.
+        // Opens a dialog panel containing player attacking moves.
         else if (command.equals("Fight"))
         {
             showAttacks(container);
         }
 
-        // Open a charPanel consisting of "Block" and "Heal" (Limited uses)
+        // Open a dialog panel consisting of "Block" and "Heal" (Limited uses)
         else if (command.equals("Utility"))
         {
             showActions(container);
         }
 
+        // Open a dialog panel to show current player stats.
         else if (command.equals("Stats"))
         {
             showStats(container);
@@ -231,30 +243,30 @@ public class GameController implements ActionListener
             surrender(container);
         }
 
-
-
         //-----------------------------------------------------------------------
         //SELECT REWARD
         //-----------------------------------------------------------------------
+
+        //Move from the item selection panel to the next battle.
         else if (command.equals("Next Battle"))
         {
             // Stop the current music.
             musicPlayer.stop();
 
-            // Play new music.
+            // Play new battle music.
             String musicPath = "src/Game/Music/battle1.wav";
             musicPlayer.play(musicPath);
             musicPlayer.loop();
 
+            //Get battle panel.
             BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
-            setBattlePanels();
 
-            battlePanel.getEnemyPanel().updateEntity(battles.get(battleCounter).getEnemy());
-
+            //Update it.
             battlePanel.revalidate();
             battlePanel.repaint();
 
-            battlePanel.getBattleLog().setText("\"" + battles.get(battleCounter).getEnemy().getGreeting()+ "\"");
+            //Enemy greeting and open panel.
+            battlePanel.getBattleLog().setText("An enemy " + battles.get(battleCounter).getEnemy().getName() + " draws near. \"" + battles.get(battleCounter).getEnemy().getGreeting()+ "\"");
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "battle");
         }
@@ -263,49 +275,45 @@ public class GameController implements ActionListener
         //-----------------------------------------------------------------------
         //VICTORY OR GAME OVER
         //-----------------------------------------------------------------------
-        if (player.getCurrentHealth() <= 0) {
 
-            BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
-            battleVictoryOrLoss(container, "YOU HAVE BEEN DEFEATED.", false, "gameover");
-            battlePanel.getBattleLog().setText("\"" + battles.get(battleCounter).getEnemy().getVictoryMsg()+ "\"");
-        }
-
-        ///Buttons for GAMEOVER
-        if (command.equals("Try Again")) {
-
-            CardLayout cardLayout = (CardLayout) container.getLayout();
-            cardLayout.show(container, "battle");
-        }
-
+        //Return to the main menu.
         else if (command.equals("Main Menu") || command.equals("Wait, I change my mind..."))
         {
+            //If the source of the main menu command is a game over panel, reset the game.
             Component source = (Component) ae.getSource();
             if (SwingUtilities.getAncestorOfClass(GameOverPanel.class, source) != null)
             {
                 reset();
             }
 
+            //Open the main menu.
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "mainmenu");
         }
 
+        //If you're clicking the "Continue..." button, it leads you to the final boss.
         else if (command.equals("Continue..."))
         {
+            //Set battle panel.
             BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
-
             battlePanel.getEnemyPanel().updateEntity(battles.get(battleCounter).getEnemy());
 
             // Stop the current music.
             musicPlayer.stop();
 
-            // Play new music.
-            String musicPath = "src/Game/Music/battle1.wav";
+            // Play final boss music.
+            String musicPath = "src/Game/Music/finalboss.wav";
             musicPlayer.play(musicPath);
             musicPlayer.loop();
 
+            //Update the battle panel.
             battlePanel.revalidate();
             battlePanel.repaint();
 
+            ///
+            battlePanel.getBattleLog().setText("...What? Is that..." + battles.get(battleCounter).getEnemy().getName() + "? \"" + battles.get(battleCounter).getEnemy().getGreeting()+ "\"");
+
+            //Open to final battle.
             CardLayout cardLayout = (CardLayout) container.getLayout();
             cardLayout.show(container, "battle");
         }
@@ -315,6 +323,7 @@ public class GameController implements ActionListener
     // UTILITY FUNCTIONS
     //-----------------------------------------------------------------------
 
+    //This function links the battles in the battle list to the battle panel.
     public void setBattlePanels()
     {
         BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
@@ -325,6 +334,7 @@ public class GameController implements ActionListener
         }
     };
 
+    //Create a character based on player choices.
     public void createCharacter()
     {
         player.setName(playerName);
@@ -343,9 +353,9 @@ public class GameController implements ActionListener
                 player.setStat(player.LOW);
                 player.setMagic(player.getStat());
 
-                player.addAttack(new Attack("Frontal Slash", "Physical", 30, 100, 100));
-                player.addAttack(new Attack("Vital Strike", "Physical", 55, 15, 15));
-                player.addAttack(new Attack("Piercing Blow", "Physical", 90, 3, 3));
+                player.addAttack(new Attack("Frontal Slash", "Physical", 15, 100, 100));
+                player.addAttack(new Attack("Vital Strike", "Physical", 30, 15, 15));
+                player.addAttack(new Attack("Piercing Blow", "Physical", 50, 3, 3));
 
                 break;
             case "Mage":
@@ -359,9 +369,9 @@ public class GameController implements ActionListener
                 player.setStat(player.HIGH);
                 player.setMagic(player.getStat());
 
-                player.addAttack(new Attack("Staff Bash", "Physical", 30, 100, 100));
-                player.addAttack(new Attack("Fire Bolt", "Magic", 55, 15, 15));
-                player.addAttack(new Attack("Lightning Spear", "Magic", 90, 3, 3));
+                player.addAttack(new Attack("Staff Bash", "Physical", 15, 100, 100));
+                player.addAttack(new Attack("Fire Bolt", "Magic", 30, 15, 15));
+                player.addAttack(new Attack("Lightning Spear", "Magic", 50, 3, 3));
                 break;
             case "Paladin":
                 player.setSprite("src/Sprites/paladinplayer.png");
@@ -374,9 +384,9 @@ public class GameController implements ActionListener
                 player.setStat(player.STANDARD);
                 player.setMagic(player.getStat());
 
-                player.addAttack(new Attack("Heavy Swing", "Physical", 30, 100, 100));
-                player.addAttack(new Attack("Holy Smite", "Magic", 55, 15, 15));
-                player.addAttack(new Attack("Divine Judgement", "Magic", 90, 3, 3));
+                player.addAttack(new Attack("Heavy Swing", "Physical", 15, 100, 100));
+                player.addAttack(new Attack("Holy Smite", "Magic", 30, 15, 15));
+                player.addAttack(new Attack("Divine Judgement", "Magic", 50, 3, 3));
 
                 break;
             default:
@@ -390,9 +400,10 @@ public class GameController implements ActionListener
                 player.setMagic(player.getStat());
                 break;
         }
+        //A special attack that insta-kills any enemy. For skipping through battles.
         if (devMode)
         {
-            player.addAttack(new Attack("UNHOLY DESTRUCTION", "Magic", 10080, 404, 404));
+            player.addAttack(new Attack("UNHOLY DESTRUCTION", "Magic", 9001, 404, 404));
         }
     }
 
@@ -414,7 +425,7 @@ public class GameController implements ActionListener
         victoryPanel.trueVictory(false);
     }
 
-    // Update battle panel
+    // Update battle panel.
     private void updateBattle()
     {
         BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
@@ -423,55 +434,83 @@ public class GameController implements ActionListener
         battlePanel.getPlayerPanel().updateEntity(battles.get(battleCounter).getPlayer());
     }
 
+    //This function handles the majority of the battle turn logic.
+    /*
+    The function is called when the player chooses an attack or action.
+    That attack or action is then applied through the Battle class.
+    From there, the enemy gets a chance to act.
+    Through some timers, the game should check to see if the enemy successfully offs you or not.
+    It's not all perfectly functional, but it's close.
+     */
     public void playerAction()
     {
         BattlePanel battlePanel = (BattlePanel) container.getComponent(container.getComponentCount() - 1);
 
-        if (battles.get(battleCounter).winConditionMet())
-        {
-            battlePanel.getBattleLog().setText("\"" + battles.get(battleCounter).getEnemy().getDefeatMsg()+ "\"");
-            player.AddCoinPurse(battles.get(battleCounter).getEnemy().getCoinReward());
-            battleCounter++;
+        Timer actionTimer = new Timer(2000, new ActionListener() { // Set a one-second delay between steps
+            private int step = 0; // Track the current stage of the turn
 
-            //MOVE TO THE INCOMPLETE VICTORY SCREEN AFTER CONFIRMING
-            if (battleCounter == 5)
-            {
-                battleVictoryOrLoss(container, "YOU EMERGE VICTORIOUS.", true, "incompletevictory");
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (step) {
+                    case 0: // Player attacking
+                        // Check if the player wins
+                        if (battles.get(battleCounter).winConditionMet()) {
+                            player.setCurrentHealth(player.getMaxHealth());
+                            battlePanel.getBattleLog().setText("The enemy " + battles.get(battleCounter).getEnemy().getName() +
+                                    " has been defeated. \"" + battles.get(battleCounter).getEnemy().getDefeatMsg() + "\"");
+                            player.AddCoinPurse(battles.get(battleCounter).getEnemy().getCoinReward());
+                            battleCounter++;
+
+                            // Move to the appropriate victory screen
+                            if (battleCounter == 5) {
+                                battleVictoryOrLoss(container, "YOU EMERGE VICTORIOUS.", true, "incompletevictory");
+                            } else if (battleCounter > 5) {
+                                battleVictoryOrLoss(container, "YOU EMERGE VICTORIOUS.", true, "truevictory");
+                            } else {
+                                battleVictoryOrLoss(container, "YOU EMERGE VICTORIOUS.", true, "itemselection");
+                            }
+                            ((Timer) e.getSource()).stop(); // Stop the timer as the battle ends
+                            return;
+                        }
+                        step++; // Proceed to enemy attack
+                        enemyTurn();
+                        break;
+
+                    case 1: // Enemy attacking
+                        // Check if the player loses
+                        if (battles.get(battleCounter).loseConditionMet()) {
+                            battlePanel.getBattleLog().setText("The " + battles.get(battleCounter).getEnemy().getName() +
+                                    "'s attack has proven fatal. \"" + battles.get(battleCounter).getEnemy().getVictoryMsg() + "\"");
+                            battleVictoryOrLoss(container, "YOU HAVE BEEN DEFEATED.", false, "gameover");
+                            ((Timer) e.getSource()).stop(); // Stop the timer as the battle ends
+                            return;
+                        }
+                        step++; // Proceed to resetting the log message
+                        break;
+
+                    case 2: // Resetting log message for player's next move
+                        battlePanel.getBattleLog().setText("Your move, adventurer.");
+                        ((Timer) e.getSource()).stop(); // Stop the timer; turn ends
+                        break;
+
+                    default: // Stop the timer for any unexpected case
+                        ((Timer) e.getSource()).stop();
+                        break;
+                }
             }
-            //MOVE TO THE TRUE VICTORY SCREEN AFTER CONFIRMING
-            else if (battleCounter > 5)
-            {
-                battleVictoryOrLoss(container, "YOU EMERGE VICTORIOUS.", true, "truevictory");
-            }
-            //MOVE TO THE ITEM SELECT MENU AFTER CONFIRMING
-            else
-            {
-                battleVictoryOrLoss(container, "YOU EMERGE VICTORIOUS.", true, "itemselection");
-            }
-        }
-        else
-        {
-            Timer enemyTurnTimer = new Timer(2500, e -> {
-                enemyTurn();
-            });
-            enemyTurnTimer.setRepeats(false);
-            enemyTurnTimer.start();
+        });
 
-
-
-            Timer resetText = new Timer(5000, e -> {
-                battlePanel.getBattleLog().setText("Your move, adventurer.");
-            });
-            resetText.setRepeats(false);
-            resetText.start();
-        }
+        actionTimer.setRepeats(true); // Ensure the timer continues for multiple stages
+        actionTimer.start();
     }
 
+    //This function just lets the enemy choose an action.
     public void enemyTurn()
     {
         battles.get(battleCounter).determineEnemyAction();
     }
 
+    //This function moves to the item selection screen.
     public void moveToSelectItemScreen() {
         ItemPanel itemSelect = (ItemPanel) container.getComponent(4);
 
@@ -497,7 +536,6 @@ public class GameController implements ActionListener
         musicPlayer.loop();
     }
 
-
     //-----------------------------------------------------------------------
     // SETTERS AND GETTERS
     //-----------------------------------------------------------------------
@@ -515,6 +553,8 @@ public class GameController implements ActionListener
     {
         return battleCounter;
     }
+
+    public MusicPlayer getMusicPlayer() {return musicPlayer;}
 
     //-----------------------------------------------------------------------
     //SPECIAL DIALOG BOXES
@@ -605,6 +645,7 @@ public class GameController implements ActionListener
         for (int i = 0; i < player.getActionCount(); i++)
         {
             // Create a button for the action.
+            int actionIndex = i;
             Action action = player.getAction(i);
             String actionlabel = action.getAction();
 
@@ -625,6 +666,10 @@ public class GameController implements ActionListener
 
                 // Close the dialog
                 dialog.dispose();
+
+                battles.get(battleCounter).playerAction(battles.get(battleCounter).getPlayer().getAction(actionIndex));
+
+                playerAction();
             });
 
             actionsPanel.add(actionButton);
@@ -643,6 +688,8 @@ public class GameController implements ActionListener
 
             // Close the dialog
             dialog.dispose();
+
+
         });
 
         // Add components to the dialog
@@ -1009,6 +1056,7 @@ public class GameController implements ActionListener
                 System.out.println("You are dead");
             }
             // Close the dialog
+            updateBattle();
             dialog.dispose();
         });
 
@@ -1054,9 +1102,12 @@ public class GameController implements ActionListener
             Item soyMilk = new Item.SoyMilk();
             Item mysteriousLiquid = new Item.MysteriousLiquid();
 
-            if (selectedItem.equals(soyMilk)) {
-                // LOGIC TO DEDUCT SECRET BOSS HEALTH
-            } else if (selectedItem.equals(mysteriousLiquid)) {
+            if (selectedItem.equals(soyMilk))
+            {
+               SecretBoss boss = (SecretBoss) battles.get(5).getEnemy();
+               boss.soyMilkPresent(true);
+            }
+            else if (selectedItem.equals(mysteriousLiquid)) {
                 // LOGIC TO FULLY REGENERATE PLAYER HEALTH UPON DEATH
             }
         }

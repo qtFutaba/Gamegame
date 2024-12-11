@@ -107,29 +107,29 @@ public class EntityPanel extends JPanel
         this.repaint();
     }
 
-    public void dropHealthBar(int newHealth)
-    {
+    public void dropHealthBar(int newHealth, Entity entity) {
         int currentHP = entity.getCurrentHealth();
         int targetHP = newHealth;
 
-        int animationDuration = 250;                    // Total animation duration in milliseconds
-        int interval = 1;                              // Timer interval in milliseconds
-        int totalSteps = animationDuration / interval;  // Total number of animation steps
+        int animationDuration = 350;                     // Total animation duration in milliseconds
+        int interval = 3;                                // Timer interval in milliseconds
+        int totalSteps = animationDuration / interval;   // Total number of animation steps
         int healthDifference = targetHP - currentHP;
         double step = (double) healthDifference / totalSteps; // Calculate dynamic step size
 
-        // Create a mutable variable for the animation progress
-        final int[] animatedHealth = {currentHP};
+        // Track the accumulated progress as a double to avoid truncation
+        final double[] accumulatedHealth = {currentHP};
 
         Timer timer = new Timer(interval, null);
 
         timer.addActionListener(e -> {
-            // Incrementally update health
-            animatedHealth[0] += step;
+            // Incrementally update health with the fractional step
+            accumulatedHealth[0] += step;
+            int newAnimatedHealth = (int) Math.round(accumulatedHealth[0]);
 
             // Stop when the target is reached
-            if ((step < 0 && animatedHealth[0] <= targetHP) || (step > 0 && animatedHealth[0] >= targetHP)) {
-                animatedHealth[0] = targetHP; // Snap to exact target value
+            if ((step < 0 && newAnimatedHealth <= targetHP) || (step > 0 && newAnimatedHealth >= targetHP)) {
+                newAnimatedHealth = targetHP; // Snap to exact target value
                 entity.setCurrentHealth(targetHP);
                 this.repaint();
                 ((Timer) e.getSource()).stop();
@@ -137,7 +137,7 @@ public class EntityPanel extends JPanel
             }
 
             // Update entity's health and repaint
-            entity.setCurrentHealth(animatedHealth[0]);
+            entity.setCurrentHealth(newAnimatedHealth);
             this.repaint();
         });
 

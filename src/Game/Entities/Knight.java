@@ -24,6 +24,10 @@ public class Knight extends Enemy {
             "En garde!",
             "You're nothing but a shadow of what you claim to be.",
             "I'll cut you down where you stand!");
+    private static final List<String> tauntMsgs = Arrays.asList(
+            "Do you really think you can get past me?",
+            "You lack the honor of a knight like me.",
+            "You are unworthy!");
 
     private final Random rand = new Random();
 
@@ -40,14 +44,29 @@ public class Knight extends Enemy {
         this.setDefense(this.getStat());
         this.setStat("low");
         this.setMagic(this.getStat());
-        this.setTurnWasteChance(25);
+        this.setTurnWasteChance(20);
 
-        this.attacks.add(new Attack("Mean Bash", "Physical", 30, 40, 40));
-        this.attacks.add(new Attack("Dastardly Slice", "Physical", 50, 5, 5));
-        this.attacks.add(new Attack("Villainous Cleave", "Physical", 80, 3, 3));
+        this.attacks.add(new Attack("Mean Bash", "Physical", 20, 40, 40));
+        this.attacks.add(new Attack("Dastardly Slice", "Physical", 30, 5, 5));
+        this.attacks.add(new Attack("Villainous Cleave", "Physical", 50, 3, 3));
 
         this.actions.add(new Action("Stall", false, 1));
         this.actions.add(new Action("Charge", false, 1));
         this.actions.add(new Action("Block", false, 1));
+    }
+    public String getGreeting() {
+        return (String)greetingMsgs.get(this.rand.nextInt(greetingMsgs.size()));
+    }
+    public String getVictoryMsg() {
+        return (String)victoryMsgs.get(this.rand.nextInt(victoryMsgs.size()));
+    }
+    public String getDefeatMsg() {
+        return (String)defeatMsgs.get(this.rand.nextInt(defeatMsgs.size()));
+    }
+    public String getAttackMsg() {
+        return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
+    }
+    public String getTauntMsg() {
+        return (String)tauntMsgs.get(this.rand.nextInt(tauntMsgs.size()));
     }
 }

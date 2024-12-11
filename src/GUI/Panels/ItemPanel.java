@@ -40,7 +40,7 @@ public class ItemPanel extends JPanel {
 
     private JTextField createItemLog() {
         // Create item selection message box (top)
-        JTextField log = new JTextField("You may choose an item.");
+        JTextField log = new JTextField("You find a small shop to rest in.");
         log.setEditable(false);
         log.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
         log.setBackground(Color.BLACK);
@@ -120,7 +120,7 @@ public class ItemPanel extends JPanel {
     /// ///////////////////////////////////////////
 
     public void resetPanel(GameController gc) {
-        
+
         // Reset ItemPanel for new items
         this.itemPanel.removeAll();
         List<Item> items = generateItems(gc);
@@ -181,6 +181,7 @@ public class ItemPanel extends JPanel {
             if (needSoyMilk) {
                 Item soyMilk = new Item.SoyMilk();
                 options.add(soyMilk);
+                needSoyMilk = false;
                 continue;
             }
 

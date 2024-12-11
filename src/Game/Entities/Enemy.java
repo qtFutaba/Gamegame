@@ -8,21 +8,19 @@ public class Enemy extends Entity{
     private int coinReward;
     private int turnWasteChance;
     private static final List<String> greetingMsgs = Arrays.asList(
-            "Ooo, fresh meat!",
-            "Got a death wish, do ya?",
-            "You look like you got somethin' shiny!");
+            "Default greeting.");
     private static final List<String> victoryMsgs = Arrays.asList(
-            "I.. I did it! I'm rich! I'm really rich! Hehehe!",
-            "You're not as tough as you thought, huh?",
-            "Too easy! Now where's the gold?");
+            "Default victory."
+            );
     private static final List<String> defeatMsgs = Arrays.asList(
-            "AAAAAA! Too strong!",
-            "You're tougher than you look...",
-            "Owww! Okay, I give up!");
+            "Default defeat."
+            );
     private static final List<String> attackMsgs = Arrays.asList(
-            "Hehehehe!",
-            "Grrr...",
-            "You're meat to my blade!");
+            "Default attack."
+            );
+    private static final List<String> tauntMsgs = Arrays.asList(
+            "Default taunt."
+    );
     private final Random rand = new Random();
 
     public Enemy(){
@@ -51,5 +49,8 @@ public class Enemy extends Entity{
     }
     public String getAttackMsg() {
         return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
+    }
+    public String getTauntMsg() {
+        return (String)tauntMsgs.get(this.rand.nextInt(tauntMsgs.size()));
     }
 }
