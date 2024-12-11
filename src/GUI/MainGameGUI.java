@@ -18,7 +18,7 @@ public class MainGameGUI extends JFrame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(Color.BLACK);
 
-        // Start fullscreen.
+        // Start fullscreen. (THIS IS REALLY BUGGY AND DOESN'T REALLY WORK RIGHT.)
         //GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //GraphicsDevice gd = ge.getDefaultScreenDevice();
         //this.setUndecorated(true);
@@ -82,3 +82,4 @@ public class MainGameGUI extends JFrame
         new MainGameGUI();
     }
 }
+

@@ -45,9 +45,9 @@ public class Orc extends Enemy {
         this.setMagic(this.getStat());
         this.setTurnWasteChance(20);
 
-        this.attacks.add(new Attack("Angry Fist", "Physical", 30, 40, 40));
-        this.attacks.add(new Attack("Heavy Smack", "Physical", 40, 5, 5));
-        this.attacks.add(new Attack("Mighty Bash", "Physical", 50, 3, 3));
+        this.attacks.add(new Attack("Angry Fist", "Physical", 25, 40, 40));
+        this.attacks.add(new Attack("Heavy Smack", "Physical", 35, 5, 5));
+        this.attacks.add(new Attack("Mighty Bash", "Physical", 45, 3, 3));
 
         this.actions.add(new Action("Stall", false, 1));
         this.actions.add(new Action("Charge", false, 1));

@@ -48,7 +48,7 @@ public class Knight extends Enemy {
 
         this.attacks.add(new Attack("Mean Bash", "Physical", 20, 40, 40));
         this.attacks.add(new Attack("Dastardly Slice", "Physical", 30, 5, 5));
-        this.attacks.add(new Attack("Villainous Cleave", "Physical", 50, 3, 3));
+        this.attacks.add(new Attack("Villainous Cleave", "Physical", 40, 3, 3));
 
         this.actions.add(new Action("Stall", false, 1));
         this.actions.add(new Action("Charge", false, 1));

@@ -1,24 +1,51 @@
 package GUI.Panels;
 
 import GUI.Controllers.*;
+import Game.Entities.Player;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 public class VictoryPanel extends JPanel
 {
-    JLabel label = new JLabel();
-    JButton continueButton = new JButton();
-    JButton mainmenuButton = new JButton();
-    JButton exitButton = new JButton();
+    private JLabel label = new JLabel();
+    private JButton continueButton = new JButton();
+    private JButton mainmenuButton = new JButton();
+    private JButton exitButton = new JButton();
+    private Player player;
+    private JLabel coinCount;
 
     // Constructor for the main menu.
     public VictoryPanel(GameController gc)
     {
-    // Create the title.
+        this.player = gc.getPlayer();
+        // Create the title.
         label = new JLabel("YOU HAVE SURVIVED THE DUNGEONS OF CAZA. OR HAVE YOU?", JLabel.CENTER);
         label.setFont(new Font("Viner Hand ITC", Font.BOLD, 26));
         label.setForeground(Color.WHITE);
+
+        // Show player score.
+        coinCount = new JLabel(player.getName() + "'s score: " + player.getCoinPurse() + " Coins");
+
+        String coinFilename = "src/Sprites/coin.png";
+        Icon coinIcon = new ImageIcon(coinFilename);
+        coinCount.setIcon(coinIcon);
+
+        coinCount.setVerticalTextPosition(SwingConstants.TOP);
+        coinCount.setHorizontalTextPosition(SwingConstants.CENTER);
+
+        coinCount.setBackground(Color.BLACK);
+        coinCount.setForeground(Color.YELLOW);
+        coinCount.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+        coinCount.setOpaque(true);
+
+        coinCount.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel scoreBuffer = new JPanel();
+        scoreBuffer.setLayout(new BoxLayout(scoreBuffer, BoxLayout.Y_AXIS));
+
+        coinCount.setAlignmentX(Component.CENTER_ALIGNMENT);
+        scoreBuffer.add(coinCount);
 
         // Create the continue button.
         continueButton = new JButton("Continue...");
@@ -36,7 +63,7 @@ public class VictoryPanel extends JPanel
         continueButtonBuffer.add(continueButton);
 
         // Create the main menu button.
-        mainmenuButton = new JButton("Main Menu");
+        mainmenuButton = new JButton("Save Score");
         mainmenuButton.addActionListener(gc);
         mainmenuButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
         mainmenuButton.setBackground(Color.BLACK);
@@ -59,19 +86,26 @@ public class VictoryPanel extends JPanel
         exitButtonBuffer.add(exitButton);
 
         // Arrange the components in a grid.
-        JPanel grid = new JPanel(new GridLayout(4, 1, 5, 5));
+        JPanel grid = new JPanel(new GridLayout(5, 1, 5, 5));
         grid.add(label);
+        grid.add(scoreBuffer);
         grid.add(continueButtonBuffer);
         grid.add(mainmenuButtonBuffer);
         grid.add(exitButtonBuffer);
 
         // Color
         grid.setBackground(Color.BLACK);
+        scoreBuffer.setBackground(Color.BLACK);
         continueButtonBuffer.setBackground(Color.BLACK);
         mainmenuButtonBuffer.setBackground(Color.BLACK);
         exitButtonBuffer.setBackground(Color.BLACK);
 
         this.add(grid);
+    }
+
+    public void updateScoreDisplay()
+    {
+        coinCount.setText(player.getName() + "'s score: " + player.getCoinPurse() + " Coins");
     }
 
     public void trueVictory(boolean achieved)
@@ -87,6 +121,4 @@ public class VictoryPanel extends JPanel
             continueButton.setVisible(true);
         }
     }
-
-
 }

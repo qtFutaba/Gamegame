@@ -45,9 +45,9 @@ public class Dragon extends Enemy {
         this.setMagic(this.getStat());
         this.setTurnWasteChance(10);
 
-        this.attacks.add(new Attack("Claw Strike", "Physical", 30, 40, 40));
-        this.attacks.add(new Attack("Fearsome Crunch", "Physical", 40, 5, 5));
-        this.attacks.add(new Attack("Flame Breath", "Magic", 70, 2, 2));
+        this.attacks.add(new Attack("Claw Strike", "Physical", 20, 40, 40));
+        this.attacks.add(new Attack("Fearsome Crunch", "Physical", 30, 5, 5));
+        this.attacks.add(new Attack("Flame Breath", "Magic", 50, 2, 2));
 
         this.actions.add(new Action("Stall", false, 1));
         this.actions.add(new Action("Charge", false, 1));

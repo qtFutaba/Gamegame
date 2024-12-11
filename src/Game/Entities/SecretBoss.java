@@ -39,9 +39,9 @@ public class SecretBoss extends Enemy {
         this.setMagic(this.getStat());
         this.setTurnWasteChance(10);
 
-        this.attacks.add(new Attack("Harsh Criticism", "Magic", 30, 40, 40));
-        this.attacks.add(new Attack("New Lab Submission", "Magic", 40, 5, 5));
-        this.attacks.add(new Attack("Exam Time", "Physical", 70, 2, 2));
+        this.attacks.add(new Attack("Harsh Criticism", "Magic", 25, 40, 40));
+        this.attacks.add(new Attack("New Lab Submission", "Magic", 40, 2, 2));
+        this.attacks.add(new Attack("Exam Time", "Physical", 40, 2, 2));
 
         this.actions.add(new Action("Stall", false, 1));
         this.actions.add(new Action("Charge", false, 1));
@@ -83,3 +83,4 @@ public class SecretBoss extends Enemy {
         return (String)tauntMsgs.get(this.rand.nextInt(tauntMsgs.size()));
     }
 }
+
