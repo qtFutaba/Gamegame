@@ -2,6 +2,8 @@ package GUI.Panels;
 
 import GUI.Controllers.*;
 import java.awt.*;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -26,7 +28,7 @@ public class SettingsPanel extends JPanel {
         musicVolumeSettingLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
         musicVolumeSettingLabel.setForeground(Color.YELLOW);
 
-        musicVolumeSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
+        musicVolumeSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, (int) gc.getMusicPlayer().getCurrentVolume());
         musicVolumeSlider.setMajorTickSpacing(1);
         musicVolumeSlider.setMinorTickSpacing(1);
         musicVolumeSlider.setPaintTicks(false);

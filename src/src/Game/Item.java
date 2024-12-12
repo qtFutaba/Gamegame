@@ -419,6 +419,38 @@ public class Item extends Gear {
         }
     }
 
+    public static class RegenerativeTea extends Item {
+        public RegenerativeTea() {
+            // Inherit superclass
+            super();
+
+            // Set item name
+            this.name = "Regenerative Tea";
+
+            // Set item price
+            this.itemPrice = 35;
+
+            // Set item rarity
+            this.rarity = 2;
+
+            // Set item type
+            this.isBuff = false;
+            this.isAction = false;
+            this.isMisc = true;
+
+            // Item description line
+            String customDescription = "It appears to be a relatively normal mug of tea - until you look inside. " +
+                    "A few strange things float around in the honey colored liquid, and it's unclear what it" +
+                    "all actually is. The shopkeep assures you it's safe though- and very energizing.";
+
+            // Item stat boost information
+            String boostDescription = generateDescription();
+
+            // Concatenate item description and stat boost information
+            this.itemDescription = boostDescription + customDescription;
+        }
+    }
+
     /// ///////////////////////////////////////////
     ///                ITEM METHODS
     /// ///////////////////////////////////////////
@@ -474,6 +506,7 @@ public class Item extends Gear {
         items.add(new CloakofSwiftCasting());
         items.add(new FortuneCookie());
         items.add(new MysteriousLiquid());
+	items.add(new RegenerativeTea());
         return items;
     }
 

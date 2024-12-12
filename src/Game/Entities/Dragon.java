@@ -2,6 +2,7 @@ package Game.Entities;
 
 import Game.Action;
 import Game.Attack;
+import Game.Music.MusicPlayer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,8 @@ public class Dragon extends Enemy {
             "Soon, your riches will pad my horde like the riches of those before you.",
             "I'm growing bored of you. Die already, will you?",
             "Your flesh will make a fine snack.");
+
+    private MusicPlayer voicePlayer;
     private final Random rand = new Random();
 
     public Dragon() {
@@ -44,10 +47,11 @@ public class Dragon extends Enemy {
         this.setStat("high");
         this.setMagic(this.getStat());
         this.setTurnWasteChance(10);
+        this.voicePlayer = new MusicPlayer();
 
-        this.attacks.add(new Attack("Claw Strike", "Physical", 30, 40, 40));
-        this.attacks.add(new Attack("Fearsome Crunch", "Physical", 40, 5, 5));
-        this.attacks.add(new Attack("Flame Breath", "Magic", 70, 2, 2));
+        this.attacks.add(new Attack("Claw Strike", "Physical", 20, 40, 40));
+        this.attacks.add(new Attack("Fearsome Crunch", "Physical", 30, 5, 5));
+        this.attacks.add(new Attack("Flame Breath", "Magic", 50, 2, 2));
 
         this.actions.add(new Action("Stall", false, 1));
         this.actions.add(new Action("Charge", false, 1));
@@ -55,19 +59,37 @@ public class Dragon extends Enemy {
 
     }
 
-    public String getGreeting() {
-        return (String)greetingMsgs.get(this.rand.nextInt(greetingMsgs.size()));
+    public String getGreeting()
+    {
+        int index = this.rand.nextInt(greetingMsgs.size());
+        String soundEffectFilename = "src/Game/Music/VoiceLines/" + this.getName() + "/greeting" + index + ".wav";
+        voicePlayer.play(soundEffectFilename);
+        return (String)greetingMsgs.get(index);
     }
-    public String getVictoryMsg() {
-        return (String)victoryMsgs.get(this.rand.nextInt(victoryMsgs.size()));
+    public String getVictoryMsg()
+    {
+        int index = this.rand.nextInt(victoryMsgs.size());
+        String soundEffectFilename = "src/Game/Music/VoiceLines/" + this.getName() + "/victory" + index + ".wav";
+        voicePlayer.play(soundEffectFilename);
+        return (String)victoryMsgs.get(index);
     }
-    public String getDefeatMsg() {
-        return (String)defeatMsgs.get(this.rand.nextInt(defeatMsgs.size()));
+    public String getDefeatMsg()
+    {
+        int index = this.rand.nextInt(defeatMsgs.size());
+        String soundEffectFilename = "src/Game/Music/VoiceLines/" + this.getName() + "/defeat" + index + ".wav";
+        voicePlayer.play(soundEffectFilename);
+        return (String)defeatMsgs.get(index);
     }
     public String getAttackMsg() {
-        return (String)attackMsgs.get(this.rand.nextInt(attackMsgs.size()));
+        int index = this.rand.nextInt(attackMsgs.size());
+        String soundEffectFilename = "src/Game/Music/VoiceLines/" + this.getName() + "/attack" + index + ".wav";
+        voicePlayer.play(soundEffectFilename);
+        return (String)attackMsgs.get(index);
     }
     public String getTauntMsg() {
-        return (String)tauntMsgs.get(this.rand.nextInt(tauntMsgs.size()));
+        int index = this.rand.nextInt(tauntMsgs.size());
+        String soundEffectFilename = "src/Game/Music/VoiceLines/" + this.getName() + "/taunt" + index + ".wav";
+        voicePlayer.play(soundEffectFilename);
+        return (String)tauntMsgs.get(index);
     }
 }

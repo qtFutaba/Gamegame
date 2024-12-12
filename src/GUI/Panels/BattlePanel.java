@@ -11,6 +11,10 @@ public class BattlePanel extends JPanel
     private JTextField battleLog;
     private EntityPanel playerPanel;
     private EntityPanel enemyPanel;
+    private JButton fightButton;
+    private JButton utilityButton;
+    private JButton statsButton;
+    private JButton surrenderButton;
 
     // Constructor for the main menu.
     public BattlePanel(GameController gc)
@@ -64,7 +68,7 @@ public class BattlePanel extends JPanel
         Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 
         //Fight.
-        JButton fightButton = new JButton("Fight");
+        fightButton = new JButton("Fight");
         fightButton.addActionListener(gc);
 
         fightButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
@@ -88,7 +92,7 @@ public class BattlePanel extends JPanel
 
 
         //Utilities.
-        JButton utilityButton = new JButton("Utility");
+        utilityButton = new JButton("Utility");
         utilityButton.addActionListener(gc);
 
         utilityButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
@@ -111,7 +115,7 @@ public class BattlePanel extends JPanel
         utilityButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Stats.
-        JButton statsButton = new JButton("Stats");
+        statsButton = new JButton("Stats");
         statsButton.addActionListener(gc);
 
         statsButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
@@ -134,7 +138,7 @@ public class BattlePanel extends JPanel
         utilityButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Surrender.
-        JButton surrenderButton = new JButton("Surrender");
+        surrenderButton = new JButton("Surrender");
         surrenderButton.addActionListener(gc);
 
         surrenderButton.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
@@ -195,8 +199,15 @@ public class BattlePanel extends JPanel
         this.add(mainGrid);
     }
 
-    public JTextField getBattleLog() { return battleLog; }
+    public void choicesActive(boolean active)
+    {
+        fightButton.setEnabled(active);
+        utilityButton.setEnabled(active);
+        statsButton.setEnabled(active);
+        surrenderButton.setEnabled(active);
+    }
 
+    public JTextField getBattleLog() { return battleLog; }
     public EntityPanel getEnemyPanel() {
         return enemyPanel;
     }

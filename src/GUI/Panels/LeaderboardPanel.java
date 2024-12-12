@@ -33,9 +33,8 @@ public class LeaderboardPanel extends JPanel {
             placeholder.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
             leaderboardBuffer.add(placeholder);
         } else {
-            // Display scores in sorted order (top 10)
-            int displayCount = Math.min(scores.size(), 10);
-            for (int i = 0; i < displayCount; i++) {
+            // Display scores in sorted order
+            for (int i = 0; i < scores.size(); i++) {
                 Score score = scores.get(i);
                 String scoreText = String.format("#%d  %-15s %d gold", (i + 1), score.getPlayerName(), score.getMoney());
 
@@ -53,6 +52,12 @@ public class LeaderboardPanel extends JPanel {
             }
         }
 
+        // Add leaderboardBuffer to a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(leaderboardBuffer);
+        scrollPane.setPreferredSize(new Dimension(400, 300)); // Set preferred size for the scrollable area
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
         // Create the return to main menu button
         JButton mainmenuButton = new JButton("Return to Main Menu.");
         mainmenuButton.addActionListener(gc);
@@ -68,15 +73,16 @@ public class LeaderboardPanel extends JPanel {
         mainmenuButtonBuffer.setBackground(Color.BLACK);
 
         // Arrange the components in a grid
-        JPanel grid = new JPanel(new GridLayout(3, 1, 5, 5));
-        grid.add(label);
-        grid.add(leaderboardBuffer);
-        grid.add(mainmenuButtonBuffer);
+        JPanel grid = new JPanel(new BorderLayout());
+        grid.add(label, BorderLayout.NORTH);
+        grid.add(scrollPane, BorderLayout.CENTER);
+        grid.add(mainmenuButtonBuffer, BorderLayout.SOUTH);
 
         // Set colors
         grid.setBackground(Color.BLACK);
 
-        this.add(grid);
+        this.setLayout(new BorderLayout());
+        this.add(grid, BorderLayout.CENTER);
         this.setBackground(Color.BLACK);
     }
 }
