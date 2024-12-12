@@ -1209,5 +1209,4 @@ public class GameController implements ActionListener
 
         return message;
     }
-
 }

@@ -8,6 +8,7 @@ public class MusicPlayer
 {
     private Clip clip;
     private FloatControl volumeControl;
+    private float currentVolume = 75f;
 
     public void play(String filePath)
     {
@@ -21,8 +22,11 @@ public class MusicPlayer
             clip = AudioSystem.getClip();
             clip.open(audioStream);
 
-            // Get the volume control (if available)
+            // Get the volume control
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            // Set the volume to the stored volume level
+            setVolume(currentVolume);
 
             // Start playback
             clip.start();
@@ -49,8 +53,10 @@ public class MusicPlayer
         }
     }
 
-    public void setVolume(float volume) {
-        if (volumeControl != null) {
+    public void setVolume(float volume)
+    {
+        if (volumeControl != null)
+        {
             // Convert volume percentage (0-100) to the scale the volume control expects
             float min = volumeControl.getMinimum();
             float max = volumeControl.getMaximum();
@@ -58,5 +64,10 @@ public class MusicPlayer
             float gain = min + (range * (volume / 100f));
             volumeControl.setValue(gain);
         }
+    }
+
+    public float getCurrentVolume()
+    {
+        return currentVolume;
     }
 }
