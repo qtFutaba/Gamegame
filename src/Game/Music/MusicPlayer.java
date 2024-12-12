@@ -8,7 +8,7 @@ public class MusicPlayer
 {
     private Clip clip;
     private FloatControl volumeControl;
-    private float currentVolume = 75f;
+    private float currentVolume = 60;
 
     public void play(String filePath)
     {
@@ -55,6 +55,8 @@ public class MusicPlayer
 
     public void setVolume(float volume)
     {
+        this.currentVolume = volume;
+
         if (volumeControl != null)
         {
             // Convert volume percentage (0-100) to the scale the volume control expects
