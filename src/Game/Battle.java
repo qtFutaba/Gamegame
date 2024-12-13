@@ -110,8 +110,11 @@ public class Battle
             soundEffectTimer.setRepeats(false);
             soundEffectTimer.start();
 
+            double defensiveFactor = attackerAttack / defenderDefense / 50;
+
             // Damage formula
-            damage = (int) ((((((2 * attacker.getLevel() * critMultiplier + 2) + 2) * attack.getPower() * ((double) attackerAttack / defenderDefense)) / 50) + 2) * randomFactor);
+            damage = (int) ((2 * attacker.getLevel() * critMultiplier + 4) * attack.getPower() * defensiveFactor * randomFactor);
+            
             if (attacker instanceof Player)
             {
                 battlePanel.getEnemyPanel().dropHealthBar(defender.getCurrentHealth() - damage , defender);
