@@ -506,7 +506,7 @@ public class Item extends Gear {
         items.add(new CloakofSwiftCasting());
         items.add(new FortuneCookie());
         items.add(new MysteriousLiquid());
-	items.add(new RegenerativeTea());
+	    items.add(new RegenerativeTea());
         return items;
     }
 

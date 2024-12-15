@@ -357,7 +357,7 @@ public class GameController implements ActionListener
     {
         player.setName(playerName);
         player.addAction(new Action("Guard", false, 1));
-        player.addAction(new Action("Healing Potion", true, 3));
+        player.addAction(new Action("Healing Potion", true, 4));
 
         switch (classChoice) {
             case "Warrior":
@@ -422,6 +422,8 @@ public class GameController implements ActionListener
         if (devMode)
         {
             player.addAttack(new Attack("UNHOLY DESTRUCTION", "Magic", 9001, 404, 404));
+            player.setMaxHealth(10000);
+            player.setCurrentHealth(10000);
         }
     }
 
@@ -482,7 +484,7 @@ public class GameController implements ActionListener
                         if (battles.get(battleCounter).winConditionMet())
                         {
                             //Heal the player for the next battle.
-                            player.setCurrentHealth(player.getMaxHealth());
+                            //player.setCurrentHealth(player.getMaxHealth());
 
                             //Display enemy defeat message.
                             battlePanel.getBattleLog().setText("The enemy " + battles.get(battleCounter).getEnemy().getName() +
@@ -1176,9 +1178,9 @@ public class GameController implements ActionListener
             int defense = player.getDefense();
             int magic = player.getMagic();
 
-            player.setAttack((int) Math.ceil(attack + (attack * (selectedItem.atkBuff / 100.0))));
-            player.setDefense((int) Math.ceil(defense + (defense * (selectedItem.defBuff / 100.0))));
-            player.setMagic((int) Math.ceil(magic + (magic * (selectedItem.magBuff / 100.0))));
+            player.setAttack(attack + selectedItem.atkBuff);
+            player.setDefense(defense + selectedItem.defBuff);
+            player.setMagic(magic + selectedItem.magBuff);
         } else if (selectedItem.isAction) {
             // LOGIC TO ADD ACTIONS TO PANEL
         } else if (selectedItem.isMisc) {
