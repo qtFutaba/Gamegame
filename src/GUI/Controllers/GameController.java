@@ -29,6 +29,9 @@ public class GameController implements ActionListener
     private boolean devMode;
     private int playerAttackActionIndex;
 
+    // Initalize the JPanelFactory
+    JPanelFactroy jPanelFactroy = new JPanelFactroy();
+
     // Constructor for the main game controller.
     public GameController(JPanel container)
     {
@@ -616,19 +619,7 @@ public class GameController implements ActionListener
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(Color.BLACK);
 
-        //Create the panel.
-        JPanel messagePanel = new JPanel();
-        messagePanel.setBackground(Color.BLACK);
-        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-
-        JLabel messageLabel = new JLabel(message, JLabel.CENTER);
-        messageLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        messageLabel.setForeground(Color.WHITE);
-        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add padding to the panel
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        messagePanel.add(messageLabel);
+        JPanel messagePanel = jPanelFactroy.Factory(message);
 
         // Create a button to return
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -668,19 +659,7 @@ public class GameController implements ActionListener
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(Color.BLACK);
 
-        //Create the panel.
-        JPanel messagePanel = new JPanel();
-        messagePanel.setBackground(Color.BLACK);
-        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-
-        JLabel messageLabel = new JLabel("Actions", JLabel.CENTER);
-        messageLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        messageLabel.setForeground(Color.WHITE);
-        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add padding to the panel
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        messagePanel.add(messageLabel);
+        JPanel messagePanel = jPanelFactroy.Factory("Action");
 
         // Create a panel to show all actions
 
@@ -763,18 +742,7 @@ public class GameController implements ActionListener
         dialog.getContentPane().setBackground(Color.BLACK);
 
         //Create the panel.
-        JPanel messagePanel = new JPanel();
-        messagePanel.setBackground(Color.BLACK);
-        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-
-        JLabel messageLabel = new JLabel("Attacks", JLabel.CENTER);
-        messageLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        messageLabel.setForeground(Color.WHITE);
-        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add padding to the panel
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        messagePanel.add(messageLabel);
+        JPanel messagePanel = jPanelFactroy.Factory("Attacks");
 
         // Create a panel to show all attacks
         JPanel attackPanel = new JPanel();
@@ -859,6 +827,7 @@ public class GameController implements ActionListener
         dialog.setVisible(true);
     }
 
+    //todo:: add in functionality in JPanelFactory to help create labels in showStats() to reduce redundancy here
     private void showStats(Component parent)
     {
         //Create a dialog
@@ -868,18 +837,7 @@ public class GameController implements ActionListener
         dialog.getContentPane().setBackground(Color.BLACK);
 
         //Create the panel.
-        JPanel messagePanel = new JPanel();
-        messagePanel.setBackground(Color.BLACK);
-        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-
-        JLabel messageLabel = new JLabel(player.getName() + "'s Stats", JLabel.CENTER);
-        messageLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        messageLabel.setForeground(Color.WHITE);
-        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add padding to the panel
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        messagePanel.add(messageLabel);
+        JPanel messagePanel = jPanelFactroy.Factory(player.getName() + "'s Stats");
 
         // Create a panel to show all player stats.
         JPanel statsPanel = new JPanel();
@@ -957,18 +915,7 @@ public class GameController implements ActionListener
         dialog.getContentPane().setBackground(Color.BLACK);
 
         //Create the panel.
-        JPanel messagePanel = new JPanel();
-        messagePanel.setBackground(Color.BLACK);
-        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-
-        JLabel messageLabel = new JLabel("Surrender?", JLabel.CENTER);
-        messageLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        messageLabel.setForeground(Color.WHITE);
-        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add padding to the panel
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        messagePanel.add(messageLabel);
+        JPanel messagePanel = jPanelFactroy.Factory("Surrender?");
 
         //Set up border format for buttons
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -1038,18 +985,7 @@ public class GameController implements ActionListener
         dialog.getContentPane().setBackground(Color.BLACK);
 
         //Create the panel.
-        JPanel messagePanel = new JPanel();
-        messagePanel.setBackground(Color.BLACK);
-        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-
-        JLabel messageLabel = new JLabel(message, JLabel.CENTER);
-        messageLabel.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-        messageLabel.setForeground(Color.WHITE);
-        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add padding to the panel
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        messagePanel.add(messageLabel);
+        JPanel messagePanel = jPanelFactroy.Factory(message);
 
         //Set up border format for buttons
         Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);

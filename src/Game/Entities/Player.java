@@ -18,7 +18,7 @@ public class Player extends Entity {
         setName("Player");
 
         gear = new ArrayList<>();
-        coinPurse = 50;
+        coinPurse = 0;
     }
 
     public List<Gear> getGear(){return gear;}

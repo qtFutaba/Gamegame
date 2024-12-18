@@ -36,8 +36,8 @@ public class Goblin extends Enemy {
     public Goblin() {
         this.setName("Goblin");
         this.setLevel(26);
-        this.setMaxHealth(60);
-        this.setCurrentHealth(60);
+        this.setMaxHealth(65);
+        this.setCurrentHealth(65);
         this.setCoinReward(20);
         this.setSprite("src/Sprites/goblin.png");
         this.setStat("low");
